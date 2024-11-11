@@ -1,6 +1,6 @@
 {
     //TODO:Ubah Nama Project
-    "name": "NAMA PROJECT",
+    "name": "Hospital Digitalization System",
     "dockerComposeFile": "../compose-dev.yaml",
     "service": "web",
     "workspaceFolder": "/app",
