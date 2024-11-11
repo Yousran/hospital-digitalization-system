@@ -1,0 +1,30 @@
+{
+    //TODO:Ubah Nama Project
+    "name": "NAMA PROJECT",
+    "dockerComposeFile": "../compose-dev.yaml",
+    "service": "web",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "adpyke.codesnap",
+                "mhutchie.git-graph",
+                "zhuangtongfa.material-theme",
+                "bmewburn.vscode-intelephense-client",
+                "onecentlin.laravel-blade",
+                "amiralizadeh9480.laravel-extra-intellisense",
+                "github.vscode-github-actions",
+                "cweijan.vscode-mysql-client2",
+                "austenc.laravel-blade-spacer",
+                "codingyu.laravel-goto-view",
+                "dbaeumer.vscode-eslint",
+                "dsznajder.es7-react-js-snippets",
+                "bradlc.vscode-tailwindcss",
+                "liviuschera.noctis"
+            ],
+            "settings": {
+                "workbench.colorTheme": "Noctis Uva"
+            }
+        }
+      }
+}
