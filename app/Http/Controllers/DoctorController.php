@@ -12,7 +12,8 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        //
+        $doctors = Doctor::with(['user.biograph','speciality'])->get();
+        return dd(compact('doctors'));
     }
 
     /**

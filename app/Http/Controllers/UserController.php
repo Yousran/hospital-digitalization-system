@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Speciality;
+use App\Models\User;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 
-class SpecialityController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $specialities = Speciality::with('doctor')->get();
-        return dd(compact('specialities'));
+        
     }
 
     /**
@@ -35,7 +35,7 @@ class SpecialityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Speciality $speciality)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +43,7 @@ class SpecialityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Speciality $speciality)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +51,7 @@ class SpecialityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Speciality $speciality)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,8 +59,15 @@ class SpecialityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Speciality $speciality)
+    public function destroy(string $id)
     {
         //
+    }
+
+    public function showProfile($username)
+    {
+        $user = User::where('name', $username)->firstOrFail();
+
+        return view('pages.profile', compact('user'));
     }
 }
