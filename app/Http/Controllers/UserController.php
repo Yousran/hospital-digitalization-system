@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -45,7 +46,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -53,7 +54,35 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'current_password' => 'required|string',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        // Cek apakah password lama sesuai
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'The current password is incorrect.']);
+        }
+
+        // Data untuk update
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+
+        // Cek jika password baru diisi dan sesuai konfirmasi
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password); // Hash password baru
+        }
+
+        // Update user
+        $user->update($data);
+
+        return redirect()->back()->with('message', 'User updated successfully');
     }
 
     /**

@@ -1,17 +1,19 @@
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
         <div class="flex items-center space-x-3">
-            <button
-                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                type="button" data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
-                aria-controls="drawer-navigation">
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M1 1h15M1 7h15M1 13h15" />
-                </svg>
-            </button>
-            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+            @auth
+                <button
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    type="button" data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
+                    aria-controls="drawer-navigation">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            @endauth
+            <a href="{{ route('home') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="{{ asset('logo.png') }}" class="h-8" alt="Flowbite Logo" />
                 <!-- Sembunyikan teks logo pada mode tablet atau lebih kecil -->
                 <span
@@ -26,25 +28,31 @@
                 id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
                 data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
-                {{-- <img class="w-8 h-8 rounded-full" src="https://picsum.photos/200" alt="user photo"> --}}
-                <div class="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                    <svg class="absolute w-10 h-10 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </div>
+                @auth
+                    <img class="w-8 h-8 rounded-full" src="https://picsum.photos/200" alt="user photo">
+                @else
+                    <div class="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                        <svg class="absolute w-10 h-10 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                @endauth
             </button>
             <!-- Dropdown user menu -->
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
                 id="user-dropdown">
-                {{-- <div class="px-4 py-3">
-                    <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-                    <span class="block text-sm text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
-                </div> --}}
+                @auth
+                    <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900 dark:text-white">{{ auth()->user()->name }}</span>
+                        <span
+                            class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ auth()->user()->email }}</span>
+                    </div>
+                @endauth
                 <ul class="py-2" aria-labelledby="user-menu-button">
                     @auth
-                        <li><a href="#"
+                        <li><a href="{{ route('user.profile', ['username' => auth()->user()->name]) }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</a>
                         </li>
                         <li><a href="#"

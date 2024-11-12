@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\BiographController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
@@ -30,6 +31,8 @@ Route::controller(AuthenticateController::class)->group(function () {
     Route::post('/password-reset', 'sendResetLinkEmail');
 });
 
+Route::resource('users', UserController::class);
+Route::resource('biographs', BiographController::class);
 Route::controller(UserController::class)->group(function(){
     Route::get('/user/{username}', 'showProfile')->name('user.profile');
 });
