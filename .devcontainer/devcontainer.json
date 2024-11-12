@@ -20,7 +20,8 @@
                 "dbaeumer.vscode-eslint",
                 "dsznajder.es7-react-js-snippets",
                 "bradlc.vscode-tailwindcss",
-                "liviuschera.noctis"
+                "liviuschera.noctis",
+                "naoray.laravel-goto-components"
             ],
             "settings": {
                 "workbench.colorTheme": "Noctis Uva"
