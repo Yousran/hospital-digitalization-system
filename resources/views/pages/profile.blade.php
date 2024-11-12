@@ -17,7 +17,7 @@
 
                 <div class="mt-2">
                     @foreach ($user->roles as $role)
-                        <span class="inline-block bg-blue-500 text-white text-sm font-medium rounded-full px-3 py-1 mr-2">
+                        <span class="inline-block {{ $role->badge_colour }} text-white text-sm font-medium rounded-full px-3 py-1 mr-2">
                             {{ $role->name }}
                         </span>
                     @endforeach
@@ -150,14 +150,16 @@
                                 <div class="p-4 w-[50vw]">
                                     <form method="POST" action="{{ $user->biograph ? route('biographs.update', $user->biograph->id) : route('biographs.store') }}">
                                         @csrf
-                                        @method('PUT')
+                                        @if ($user->biograph)
+                                            @method('PUT')
+                                        @endif
                                         
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <!-- First Column -->
                                             <div>
                                                 <!-- Surname Field -->
                                                 <div class="mb-4">
-                                                    <label for="surename" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surname</label>
+                                                    <label for="surename" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surename</label>
                                                     <input type="text" name="surename" value="{{ $user->biograph->surename ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                                                 </div>
                                 
@@ -198,8 +200,8 @@
                                                 <div class="mb-4">
                                                     <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
                                                     <select name="gender" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                                        <option value="laki-laki" {{ $user->biograph->gender == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                                        <option value="perempuan" {{ $user->biograph->gender == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                                        <option value="laki-laki" {{ isset($user->biograph->gender) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                                        <option value="perempuan" {{ isset($user->biograph->gender) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                                                     </select>
                                                 </div>
                                 
@@ -226,9 +228,18 @@
             </div>
 
             <!-- Card 3 -->
+
+            {{-- Medical Record --}}
             <div class="col-span-1 sm:col-span-2">
                 <x-profile-card dropdownId="3">
+                    
+                </x-profile-card>
+            </div>
 
+            {{-- Next Schedule --}}
+            <div class="col-span-1 sm:col-span-1">
+                <x-profile-card dropdownId="4">
+                    
                 </x-profile-card>
             </div>
         </div>

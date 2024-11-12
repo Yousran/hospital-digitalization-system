@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -39,6 +40,11 @@ class AuthenticateController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'picture' => $request->file_id,
+        ]);
+
+        $roles = UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => 3,
         ]);
 
         // Login otomatis setelah registrasi

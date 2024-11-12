@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description')->nullable();
+            $table->string('badge_colour')->default('bg-blue-500');
             $table->timestamps();
         });
     }

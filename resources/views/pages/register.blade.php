@@ -56,7 +56,7 @@
                         </div>
                     </div>
 
-                    <x-file-dropzone/>
+                    <x-file-dropzone id="1"/>
 
                     <div class="flex items-start">
                         <div class="flex items-center h-5">
