@@ -27,7 +27,7 @@ class BiographSeeder extends Seeder
         ]);
 
         Biograph::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'nik' => '7602010203040002',
             'surename' => 'pasien kosong',
             'date_of_birth' => '2004-03-03',
