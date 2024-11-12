@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Biograph;
 use App\Models\User;
-use Illuminate\Container\Attributes\Auth;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,7 +15,30 @@ class UserController extends Controller
      */
     public function index()
     {
-        
+        $users = User::all();
+        return view('pages.manage.users', compact('users'));
+    }
+
+    // public function datatable(){
+    //     $users = User::all()->first();
+    //     return compact('users');
+    // }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $data = User::where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('email', 'LIKE', "%{$query}%")
+                    ->get();
+
+        $columns = !empty($data) ? array_keys($data->first()->getAttributes()) : [];
+        return view('components.datatable-content', [
+            'data' => $data,
+            'columns' => $columns,
+            'routeDelete' => 'users.destroy'
+        ])->render();
+
     }
 
     /**
@@ -30,7 +54,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validasi data yang diterima dari form
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'file_id' => 'nullable|integer',
+            
+        ]);
+
+        // Buat user baru dan login otomatis
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'picture' => $request->file_id,
+        ]);
+
+        $roles = UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => 3,
+        ]);
+
+        // Redirect ke halaman utama setelah sukses registrasi
+        return redirect()->back()->with('message', 'User registered successfully');
     }
 
     /**
@@ -92,7 +139,19 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Temukan pengguna berdasarkan ID
+        $user = User::find($id);
+
+        // Periksa apakah pengguna ditemukan
+        if (!$user) {
+            return redirect()->route('users.index')->with('error', 'User not found');
+        }
+
+        // Hapus pengguna
+        $user->delete();
+
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->back()->with('success', 'User deleted successfully');
     }
 
     public function showProfile($username)

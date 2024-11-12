@@ -5,6 +5,7 @@ use App\Http\Controllers\BiographController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
 use App\Models\Role;
@@ -15,6 +16,8 @@ Route::get('/', function () {
 })->name('home');
 
 Route::resource('users', UserController::class);
+Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
+Route::resource('roles', RoleController::class);
 Route::resource('patients', PatientController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('specialities', SpecialityController::class);
