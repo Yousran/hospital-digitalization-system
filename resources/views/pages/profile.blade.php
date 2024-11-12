@@ -5,7 +5,12 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Card 1 -->
             <x-profile-card>
-                <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200" alt="Profile Image" />
+                
+                @isset($user->profilPicture->path)
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset('storage/' . $user->profilPicture->path) }}" alt="Profile Image" />
+                @else
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200" alt="Profile Image" />
+                @endisset
                 <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ $user->name }}</h5>
                 <p class="text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</p>
 

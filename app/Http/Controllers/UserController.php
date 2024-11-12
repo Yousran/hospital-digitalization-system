@@ -95,8 +95,9 @@ class UserController extends Controller
 
     public function showProfile($username)
     {
-        $user = User::where('name', $username)->firstOrFail();
+        $user = User::with(['roles', 'doctor', 'profilPicture', 'patient', 'biograph'])->where('name', $username)->firstOrFail();
 
+        // return dd($user->profilPicture->path);
         return view('pages.profile', compact('user'));
     }
 }

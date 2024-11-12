@@ -59,6 +59,8 @@
                             @enderror
                         </div>
 
+                        <x-file-dropzone/>                  
+                        
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
                                 <input id="terms" aria-describedby="terms" type="checkbox" name="terms"

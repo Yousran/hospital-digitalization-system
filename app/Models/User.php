@@ -16,6 +16,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'picture',
     ];
 
     protected $hidden = [
@@ -37,6 +38,10 @@ class User extends Authenticatable
 
     public function doctor(){
         return $this->hasOne(Doctor::class);
+    }
+    
+    public function profilPicture(){
+        return $this->belongsTo(File::class, 'picture');
     }
 
     public function patient(){

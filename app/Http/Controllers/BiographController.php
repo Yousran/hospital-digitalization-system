@@ -21,16 +21,11 @@ class BiographController extends Controller
             'religion' => 'required|string|max:100',
             'marriage_status' => 'required|string|max:100',
             'job' => 'required|string|max:100',
-            'file_id' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'file_id' => 'nullable|integer',
         ]);
 
         $user_id = Auth::id();
-        $filePath = null;
-        if ($request->hasFile('file_id')) {
-            $file = $request->file('file_id');
-            $filePath = $file->store('uploads', 'public');
-        }
-        // Create a new biograph record
+
         Biograph::updateOrCreate(
             ['user_id' => $user_id],
             [
@@ -42,7 +37,7 @@ class BiographController extends Controller
                 'religion' => $request->input('religion'),
                 'marriage_status' => $request->input('marriage_status'),
                 'job' => $request->input('job'),
-                'file_id' => $filePath,
+                'file_id' => $request->input('file_id'),
             ]
         );
 

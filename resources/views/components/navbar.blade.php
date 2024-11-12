@@ -29,7 +29,11 @@
                 data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
                 @auth
-                    <img class="w-8 h-8 rounded-full" src="https://picsum.photos/200" alt="user photo">
+                    @if (isset(Auth::user()->profilPicture->path))
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . Auth::user()->profilPicture->path) }}" alt="user photo">
+                    @else
+                        <img class="w-8 h-8 rounded-full" src="https://picsum.photos/200" alt="user photo">
+                    @endif
                 @else
                     <div class="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                         <svg class="absolute w-10 h-10 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20"

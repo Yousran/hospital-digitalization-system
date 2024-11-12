@@ -29,6 +29,8 @@ class AuthenticateController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'file_id' => 'nullable|integer',
+            
         ]);
 
         // Buat user baru dan login otomatis
@@ -36,6 +38,7 @@ class AuthenticateController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'picture' => $request->file_id,
         ]);
 
         // Login otomatis setelah registrasi
@@ -57,7 +60,6 @@ class AuthenticateController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
 
-            // Redirect ke halaman utama setelah login sukses
             return redirect()->route('home')->with('message', 'Logged in successfully');
         }
 
