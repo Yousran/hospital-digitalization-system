@@ -21,7 +21,8 @@
                 "dsznajder.es7-react-js-snippets",
                 "bradlc.vscode-tailwindcss",
                 "liviuschera.noctis",
-                "naoray.laravel-goto-components"
+                "naoray.laravel-goto-components",
+                "shufo.vscode-blade-formatter"
             ],
             "settings": {
                 "workbench.colorTheme": "Noctis Uva"
