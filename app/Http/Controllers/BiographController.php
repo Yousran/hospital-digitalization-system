@@ -57,6 +57,7 @@ class BiographController extends Controller
             'religion' => 'required|string',
             'marriage_status' => 'required|string',
             'job' => 'required|string',
+            'file_id' => 'nullable|integer',
         ]);
 
         // Find the biograph entry
@@ -72,6 +73,7 @@ class BiographController extends Controller
             'religion' => $request->input('religion'),
             'marriage_status' => $request->input('marriage_status'),
             'job' => $request->input('job'),
+            'file_id' => $request->input('file_id'),
         ]);
 
         // Redirect back with a success message

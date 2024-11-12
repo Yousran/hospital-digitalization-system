@@ -1,7 +1,7 @@
 <!-- resources/views/components/modal.blade.php -->
 <div id="{{ $target }}" tabindex="-1" aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal md:h-full">
-    <div class="relative w-full h-full max-w-md md:h-auto">
+    <div class="relative w-full h-full max-w-fit md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
@@ -22,7 +22,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="p-6 space-y-6">
+            <div class="p-6 space-y-6 w-fit">
                 {{ $slot }}
             </div>
         </div>

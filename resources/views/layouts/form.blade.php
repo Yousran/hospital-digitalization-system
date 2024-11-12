@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
     @yield('contents')
     @yield('scripts')
 </body>

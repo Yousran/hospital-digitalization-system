@@ -59,6 +59,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'current_password' => 'required|string',
             'password' => 'nullable|string|min:8|confirmed',
+            'file_id' => 'nullable|integer',
         ]);
 
         $user = User::findOrFail($id);
@@ -72,6 +73,7 @@ class UserController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
+            'picture' => $request->file_id,
         ];
 
         // Cek jika password baru diisi dan sesuai konfirmasi

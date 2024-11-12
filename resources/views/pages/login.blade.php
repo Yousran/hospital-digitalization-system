@@ -1,7 +1,7 @@
 @extends('layouts.form')
 @section('contents')
-    <section class="bg-gray-50 dark:bg-gray-900">
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section class="bg-gray-50 dark:bg-gray-900 h-full">
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen">
             <a href="{{ route('home') }}" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                 <img src="logo.png" class="w-8 h-8 mr-4" alt="Logo" />
                 Rumah Sehat

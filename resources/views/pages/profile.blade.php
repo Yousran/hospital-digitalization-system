@@ -5,9 +5,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Card 1 -->
             <x-profile-card>
-                
+
                 @isset($user->profilPicture->path)
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset('storage/' . $user->profilPicture->path) }}" alt="Profile Image" />
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset('storage/' . $user->profilPicture->path) }}"
+                        alt="Profile Image" />
                 @else
                     <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200" alt="Profile Image" />
                 @endisset
@@ -31,47 +32,45 @@
                         </li>
                     </x-card-menu>
                     <x-modal target="editModal" modalTitle="Edit User">
-                        <form method="POST" action="{{ route('users.update', $user->id) }}">
-                            @csrf
-                            @method('PUT')
-                            <div class="mb-4">
-                                <label for="name"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                                <input type="text" name="name" value="{{ $user->name }}"
-                                    class="mt-1 block w-full p-2 border rounded-lg" required>
-                            </div>
-                            <div class="mb-4">
-                                <label for="email"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                                <input type="email" name="email" value="{{ $user->email }}"
-                                    class="mt-1 block w-full p-2 border rounded-lg" required>
-                            </div>
-                            <div class="mb-4">
-                                <label for="current_password"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current
-                                    Password</label>
-                                <input type="password" name="current_password"
-                                    class="mt-1 block w-full p-2 border rounded-lg" placeholder="Enter current password"
-                                    required>
-                            </div>
-                            <div class="mb-4">
-                                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">New
-                                    Password</label>
-                                <input type="password" name="password" class="mt-1 block w-full p-2 border rounded-lg"
-                                    placeholder="New password">
-                            </div>
-                            <div class="mb-4">
-                                <label for="password_confirmation"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm New
-                                    Password</label>
-                                <input type="password" name="password_confirmation"
-                                    class="mt-1 block w-full p-2 border rounded-lg" placeholder="Confirm new password">
-                            </div>
-                            <button type="submit"
-                                class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                Update
-                            </button>
-                        </form>
+                        <div class="p-4 max-h-[80vh] w-[50vw]">
+                            <form method="POST" action="{{ route('users.update', $user->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- First Column -->
+                                    <div>
+                                        <div class="mb-4">
+                                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                                            <input type="text" name="name" value="{{ $user->name }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                                            <input type="email" name="email" value="{{ $user->email }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Picture</label>
+                                            <x-file-dropzone id="1" />
+                                        </div>
+                                    </div>
+                                    <!-- Second Column -->
+                                    <div>
+                                        <div class="mb-4">
+                                            <label for="current_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current Password</label>
+                                            <input type="password" name="current_password" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Enter current password" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">New Password</label>
+                                            <input type="password" name="password" class="mt-1 block w-full p-2 border rounded-lg" placeholder="New password">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm New Password</label>
+                                            <input type="password" name="password_confirmation" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Confirm new password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>
+                            </form>
+                        </div>                        
                     </x-modal>
                 </x-slot>
 
@@ -147,179 +146,81 @@
                                 </a>
                             </li>
                         </x-card-menu>
-                        @if ($user->biograph)
                             <x-modal target="editBiograph" modalTitle="Edit Biograph">
-                                <div class="p-4 max-h-[80vh]">
-                                <form method="POST" action="{{ route('biographs.update', $user->biograph->id) }}">
-                                    @csrf
-                                    @method('PUT')
-
-                                    <!-- NIK Field -->
-                                    <div class="mb-4">
-                                        <label for="nik"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
-                                        <input type="text" name="nik" value="{{ $user->biograph->nik ?? '' }}"
-                                            class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    </div>
-
-                                    <!-- Surname Field -->
-                                    <div class="mb-4">
-                                        <label for="surename"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surname</label>
-                                        <input type="text" name="surename"
-                                            value="{{ $user->biograph->surename ?? '' }}"
-                                            class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    </div>
-
-                                    <!-- Date of Birth Field -->
-                                    <div class="mb-4">
-                                        <label for="date_of_birth"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of
-                                            Birth</label>
-                                        <input type="date" name="date_of_birth"
-                                            value="{{ $user->biograph->date_of_birth ?? '' }}"
-                                            class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    </div>
-
-                                    <!-- Gender Field -->
-                                    <div class="mb-4">
-                                        <label for="gender"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
-                                        <select name="gender" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                            <option value="laki-laki"
-                                                {{ $user->biograph->gender == 'laki-laki' ? 'selected' : '' }}>
-                                                Laki-laki
-                                            </option>
-                                            <option value="perempuan"
-                                                {{ $user->biograph->gender == 'perempuan' ? 'selected' : '' }}>
-                                                Perempuan</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Address Field -->
-                                    <div class="mb-4">
-                                        <label for="address"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
-                                        <textarea name="address" class="mt-1 block w-full p-2 border rounded-lg" required>{{ $user->biograph->address ?? '' }}</textarea>
-                                    </div>
-
-                                    <!-- Religion Field -->
-                                    <div class="mb-4">
-                                        <label for="religion"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Religion</label>
-                                        <input type="text" name="religion"
-                                            value="{{ $user->biograph->religion ?? '' }}"
-                                            class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    </div>
-
-                                    <!-- Marriage Status Field -->
-                                    <div class="mb-4">
-                                        <label for="marriage_status"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Marriage
-                                            Status</label>
-                                        <input type="text" name="marriage_status"
-                                            value="{{ $user->biograph->marriage_status ?? '' }}"
-                                            class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    </div>
-
-                                    <!-- Job Field -->
-                                    <div class="mb-4">
-                                        <label for="job"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job</label>
-                                        <input type="text" name="job" value="{{ $user->biograph->job ?? '' }}"
-                                            class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    </div>
-
-                                    <!-- File ID Field -->
-                                    <div class="mb-4">
-                                        <label for="file_id"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">File</label>
-                                        <input type="file" name="file_id"
-                                            class="mt-1 block w-full p-2 border rounded-lg">
-                                    </div>
-
-                                    <!-- Submit Button -->
-                                    <button type="submit"
-                                        class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                        Update
-                                    </button>
-                                </form>
-                                </div>
+                                <div class="p-4 w-[50vw]">
+                                    <form method="POST" action="{{ $user->biograph ? route('biographs.update', $user->biograph->id) : route('biographs.store') }}">
+                                        @csrf
+                                        @method('PUT')
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <!-- First Column -->
+                                            <div>
+                                                <!-- Surname Field -->
+                                                <div class="mb-4">
+                                                    <label for="surename" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surname</label>
+                                                    <input type="text" name="surename" value="{{ $user->biograph->surename ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                </div>
+                                
+                                                <!-- Date of Birth Field -->
+                                                <div class="mb-4">
+                                                    <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of Birth</label>
+                                                    <input type="date" name="date_of_birth" value="{{ $user->biograph->date_of_birth ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                </div>
+                                
+                                                <!-- Address Field -->
+                                                <div class="mb-4">
+                                                    <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
+                                                    <textarea name="address" class="mt-1 block w-full p-2 border rounded-lg" required>{{ $user->biograph->address ?? '' }}</textarea>
+                                                </div>
+                                
+                                                <!-- Religion Field -->
+                                                <div class="mb-4">
+                                                    <label for="religion" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Religion</label>
+                                                    <input type="text" name="religion" value="{{ $user->biograph->religion ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                </div>
+                                
+                                                <!-- Job Field -->
+                                                <div class="mb-4">
+                                                    <label for="job" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job</label>
+                                                    <input type="text" name="job" value="{{ $user->biograph->job ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                </div>
+                                            </div>
+                                
+                                            <!-- Second Column -->
+                                            <div>
+                                                <!-- NIK Field -->
+                                                <div class="mb-4">
+                                                    <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
+                                                    <input type="text" name="nik" value="{{ $user->biograph->nik ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                </div>
+                                
+                                                <!-- Gender Field -->
+                                                <div class="mb-4">
+                                                    <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
+                                                    <select name="gender" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                        <option value="laki-laki" {{ $user->biograph->gender == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                                        <option value="perempuan" {{ $user->biograph->gender == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                                    </select>
+                                                </div>
+                                
+                                                <!-- Marriage Status Field -->
+                                                <div class="mb-4">
+                                                    <label for="marriage_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Marriage Status</label>
+                                                    <input type="text" name="marriage_status" value="{{ $user->biograph->marriage_status ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                                </div>
+                                
+                                                <!-- File ID Field -->
+                                                <div class="mb-4">
+                                                    <label for="file_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">File</label>
+                                                    <x-file-dropzone id="2"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>
+                                    </form>
+                                </div>                                
                             </x-modal>
-                        @else
-                        <x-modal target="editBiograph" modalTitle="Create Biograph">
-                            <div class="p-4 max-h-[80vh] overflow-y-auto">
-                                <form method="POST" action="{{ route('biographs.store') }}" enctype="multipart/form-data">
-                                    @csrf
-                                    <!-- Two-column grid layout -->
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        
-                                        <!-- NIK Field -->
-                                        <div class="mb-4">
-                                            <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
-                                            <input type="text" name="nik" value="{{ old('nik') }}" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                        </div>
-                        
-                                        <!-- Surname Field -->
-                                        <div class="mb-4">
-                                            <label for="surename" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surname</label>
-                                            <input type="text" name="surename" value="{{ old('surename') }}" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                        </div>
-                        
-                                        <!-- Date of Birth Field -->
-                                        <div class="mb-4">
-                                            <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of Birth</label>
-                                            <input type="date" name="date_of_birth" value="{{ old('date_of_birth') }}" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                        </div>
-                        
-                                        <!-- Gender Field -->
-                                        <div class="mb-4">
-                                            <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
-                                            <select name="gender" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                                <option value="laki-laki" {{ old('gender') == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                                <option value="perempuan" {{ old('gender') == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
-                                            </select>
-                                        </div>
-                        
-                                        <!-- Address Field -->
-                                        <div class="mb-4 sm:col-span-2">
-                                            <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
-                                            <textarea name="address" class="mt-1 block w-full p-2 border rounded-lg" required>{{ old('address') }}</textarea>
-                                        </div>
-                        
-                                        <!-- Religion Field -->
-                                        <div class="mb-4">
-                                            <label for="religion" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Religion</label>
-                                            <input type="text" name="religion" value="{{ old('religion') }}" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                        </div>
-                        
-                                        <!-- Marriage Status Field -->
-                                        <div class="mb-4">
-                                            <label for="marriage_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Marriage Status</label>
-                                            <input type="text" name="marriage_status" value="{{ old('marriage_status') }}" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                        </div>
-                        
-                                        <!-- Job Field -->
-                                        <div class="mb-4">
-                                            <label for="job" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job</label>
-                                            <input type="text" name="job" value="{{ old('job') }}" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                        </div>
-                        
-                                        <!-- File Upload Field -->
-                                        <div class="mb-4 sm:col-span-2">
-                                            <label for="file_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">File</label>
-                                            <input type="file" name="file_id" class="mt-1 block w-full p-2 border rounded-lg">
-                                        </div>
-                                    </div>
-                        
-                                    <!-- Submit Button -->
-                                    <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4">
-                                        Submit
-                                    </button>
-                                </form>
-                            </div>
-                        </x-modal>                        
-                        @endif
                     </x-slot>
                 </x-profile-card>
             </div>
