@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\BiographController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SpecialityController;
@@ -21,8 +22,12 @@ Route::post('/patients/datatable', [PatientController::class, 'datatable'])->nam
 Route::resource('doctors', DoctorController::class);
 Route::post('/doctors/datatable', [DoctorController::class, 'datatable'])->name('doctors.datatable');
 Route::resource('specialities', SpecialityController::class);
-Route::resource('biographs', BiographController::class);
+Route::post('/specialities/datatable', [SpecialityController::class, 'datatable'])->name('specialities.datatable');
+Route::resource('medical-records', MedicalRecordController::class);
+Route::post('/medical-records/datatable', [MedicalRecordController::class, 'datatable'])->name('medical-records.datatable');
+Route::post('/roles/datatable', [RoleController::class, 'datatable'])->name('roles.datatable');
 Route::resource('roles', RoleController::class);
+Route::resource('biographs', BiographController::class);
 
 Route::controller(AuthenticateController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
