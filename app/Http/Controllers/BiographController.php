@@ -15,7 +15,8 @@ class BiographController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
-        $request->validate([
+        $validated = $request->validate([
+            'user_id' => 'nullable|integer',
             'nik' => 'required|string|max:255',
             'surename' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
@@ -26,14 +27,12 @@ class BiographController extends Controller
             'job' => 'required|string|max:100',
             'file_id' => 'nullable|integer',
             'speciality_id' => 'nullable|integer',
-            'relatives' => 'nullable|integer',
+            'relatives' => 'nullable|string',
         ]);
 
-        $user_id = Auth::id();
-
-        Biograph::updateOrCreate(
-            ['user_id' => $user_id],
+        $biograph = Biograph::updateOrCreate(
             [
+                'user_id' => $request->input('user_id'),
                 'nik' => $request->input('nik'),
                 'surename' => $request->input('surename'),
                 'date_of_birth' => $request->input('date_of_birth'),
@@ -45,6 +44,30 @@ class BiographController extends Controller
                 'file_id' => $request->input('file_id'),
             ]
         );
+
+        // Update speciality if speciality_id is provided
+        if (!empty($validated['speciality_id']) && $biograph) {
+            Doctor::create(
+                [
+                    'speciality_id' => $validated['speciality_id'],
+                    'biograph_id' => $biograph->id,
+                ]);
+        }
+
+        // Update patient relatives if patient_id and relatives are provided
+        if (!empty($validated['relatives']) && $biograph) {
+            $relatives = User::where('name', $validated['relatives'])->first();
+            if ($relatives) {
+                Patient::create(
+                    [
+                        'relatives' => $relatives->id,
+                        'biograph_id' => $biograph->id,
+                    ]);
+            } else {
+                // Handle the case when no relative is found (optional)
+                return redirect()->back()->withErrors(['relatives' => 'Relative not found']);
+            }
+        }
 
         // Redirect with success message
         return redirect()->back()->with('success', 'Biograph created successfully.');

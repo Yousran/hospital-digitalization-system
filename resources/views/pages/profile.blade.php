@@ -159,6 +159,7 @@
                                             <div>
                                                 <!-- Surname Field -->
                                                 <div class="mb-4">
+                                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
                                                     <label for="surename" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surename</label>
                                                     <input type="text" name="surename" value="{{ $user->biograph->surename ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                                                 </div>
@@ -213,7 +214,7 @@
                                 
                                                 <!-- File ID Field -->
                                                 <div class="mb-4">
-                                                    <label for="file_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">File</label>
+                                                    <label for="file_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Foto KTP</label>
                                                     <x-file-dropzone id="2"/>
                                                 </div>
                                             </div>

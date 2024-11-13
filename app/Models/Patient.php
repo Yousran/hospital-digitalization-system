@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     protected $fillable = [
-        'relatives'
+        'relatives',
+        'biograph_id',
     ];
     public function user(){
         return $this->belongsTo(User::class);

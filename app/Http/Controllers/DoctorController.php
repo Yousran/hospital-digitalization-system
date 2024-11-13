@@ -14,7 +14,8 @@ class DoctorController extends Controller
     public function index()
     {
         $doctors = Doctor::with(['biograph','speciality'])->get();
-        return view('pages.manage.doctors',compact('doctors'));
+        $specialities = Speciality::all();
+        return view('pages.manage.doctors',compact('doctors', 'specialities'));
     }
 
     public function datatable(Request $request)
@@ -52,12 +53,13 @@ class DoctorController extends Controller
                 'speciality' => optional($doctor->speciality)->name,
                 'surename' => optional($doctor->biograph)->surename,
                 'nik' => optional($doctor->biograph)->nik,
+                'rating' => $doctor->rating,
             ];
         });
 
         return response()->json([
             'data' => $result,
-            'columns' => ['id', 'name', 'speciality', 'surename', 'nik']
+            'columns' => ['id', 'name', 'speciality', 'surename', 'nik', 'rating']
         ]);
     }
 

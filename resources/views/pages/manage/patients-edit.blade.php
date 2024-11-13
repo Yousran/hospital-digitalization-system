@@ -73,7 +73,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="file_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">File</label>
+                                <label for="file_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Foto KTP</label>
                                 <x-file-dropzone id="2"/>
                             </div>
                         </div>
