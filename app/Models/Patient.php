@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     public function user(){
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function relative(){
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function medicalRecords(){
