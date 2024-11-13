@@ -8,7 +8,6 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
-use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,12 +16,13 @@ Route::get('/', function () {
 
 Route::resource('users', UserController::class);
 Route::post('/users/datatable', [UserController::class, 'datatable'])->name('users.datatable');
-Route::resource('roles', RoleController::class);
 Route::resource('patients', PatientController::class);
 Route::post('/patients/datatable', [PatientController::class, 'datatable'])->name('patients.datatable');
 Route::resource('doctors', DoctorController::class);
+Route::post('/doctors/datatable', [DoctorController::class, 'datatable'])->name('doctors.datatable');
 Route::resource('specialities', SpecialityController::class);
 Route::resource('biographs', BiographController::class);
+Route::resource('roles', RoleController::class);
 
 Route::controller(AuthenticateController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
