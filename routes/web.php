@@ -5,6 +5,7 @@ use App\Http\Controllers\BiographController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MedicalRecordController;
+use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SpecialityController;
@@ -27,7 +28,11 @@ Route::post('/roles/datatable', [RoleController::class, 'datatable'])->name('rol
 Route::resource('roles', RoleController::class);
 Route::resource('medical-records', MedicalRecordController::class);
 Route::post('/medical-records/datatable', [MedicalRecordController::class, 'datatable'])->name('medical-records.datatable');
+
 Route::resource('biographs', BiographController::class);
+
+Route::resource('medicines', MedicineController::class);
+Route::post('/medicines/update-stock', [MedicineController::class, 'updateStock'])->name('medicines.updateStock');
 
 Route::controller(AuthenticateController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');

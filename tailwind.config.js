@@ -17,6 +17,7 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                //TODO: Theme Color
                 "primary": "#5D80AB",
                 "primary-50": "#81A1C1",
                 "secondary": "#4C566A",

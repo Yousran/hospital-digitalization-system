@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Medicine extends Model
 {
-    public function picture(){
-        return $this->belongsTo(File::class);
+    protected $fillable = [
+        'name',
+        'description',
+        'type',
+        'stock',
+        'picture'
+    ];
+    public function medicinePicture(){
+        return $this->belongsTo(File::class, 'picture');
     }
 
     public function medicalRecords()

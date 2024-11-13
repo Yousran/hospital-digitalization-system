@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('type');
-            $table->integer('stock');
+            $table->integer('stock')->default(0);
             $table->foreignId('picture')->nullable()->constrained('files')->nullOnDelete();
             $table->timestamps();
         });
