@@ -130,6 +130,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255|unique:users,name,' . $user->id,
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
+            'file_id' => 'nullable|integer',
             'roles' => 'nullable|array', // Ensure roles is an array
             'roles.*' => 'exists:roles,id', // Ensure each role exists in the roles table
         ]);
@@ -137,6 +138,7 @@ class UserController extends Controller
         // Update the user information
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->picture = $validated['file_id'];
 
         // Update the password if provided
         if ($request->filled('password')) {
@@ -150,7 +152,7 @@ class UserController extends Controller
             $user->roles()->sync($validated['roles']);
         }
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->back()->with('success', 'User updated successfully');
     }
 
     /**

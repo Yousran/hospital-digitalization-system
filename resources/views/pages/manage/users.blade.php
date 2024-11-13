@@ -39,7 +39,7 @@
                                 <div>
                                     <div class="mb-4">
                                         <label for="password"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Current
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                             Password</label>
                                         <input type="password" name="password"
                                             class="mt-1 block w-full p-2 border rounded-lg"
