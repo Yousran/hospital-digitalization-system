@@ -79,8 +79,7 @@ class PatientController extends Controller
      */
     public function edit(string $id)
     {
-        $patient = Patient::findOrFail($id);
-    
+        $patient = Patient::with('relative')->findOrFail($id);
         return view('pages.manage.patients-edit', compact(['patient']));
     }
 

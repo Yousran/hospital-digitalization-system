@@ -23,5 +23,11 @@ class DoctorSeeder extends Seeder
             'speciality_id' => 1,
             'rating' => 0,
         ]);
+        Doctor::create([
+            'user_id' => null,
+            'biograph_id' => 2,
+            'speciality_id' => 2,
+            'rating' => 0,
+        ]);
     }
 }

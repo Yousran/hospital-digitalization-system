@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
+    protected $fillable = [
+        'relatives'
+    ];
     public function user(){
         return $this->belongsTo(User::class);
     }
 
     public function relative(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'relatives');
     }
     
     public function biograph(){

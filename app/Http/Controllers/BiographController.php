@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Biograph;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +25,8 @@ class BiographController extends Controller
             'marriage_status' => 'required|string|max:100',
             'job' => 'required|string|max:100',
             'file_id' => 'nullable|integer',
+            'speciality_id' => 'nullable|integer',
+            'relatives' => 'nullable|integer',
         ]);
 
         $user_id = Auth::id();
@@ -48,7 +53,7 @@ class BiographController extends Controller
     public function update(Request $request, $id)
     {
         // Validate the incoming request data
-        $request->validate([
+        $validated = $request->validate([
             'nik' => 'required|string|max:255',
             'surename' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
@@ -58,7 +63,32 @@ class BiographController extends Controller
             'marriage_status' => 'required|string',
             'job' => 'required|string',
             'file_id' => 'nullable|integer',
+            'doctor_id' => 'nullable|integer',
+            'speciality_id' => 'nullable|integer',
+            'patient_id' => 'nullable|integer',
+            'relatives' => 'nullable|string', // Assuming 'relatives' is an ID of another user
         ]);
+
+        // Update speciality if speciality_id is provided
+        if (!empty($validated['speciality_id']) && !empty($validated['doctor_id'])) {
+            $doctor = Doctor::findOrFail($validated['doctor_id']);
+            $doctor->update(['speciality_id' => $validated['speciality_id']]);
+        }
+
+        // Update patient relatives if patient_id and relatives are provided
+        if (!empty($validated['relatives']) && !empty($validated['patient_id'])) {
+            $patient = Patient::findOrFail($validated['patient_id']);
+            
+            // Find the relative based on the name
+            $relatives = User::where('name', $validated['relatives'])->first();  // Use `first()` to get the actual user
+            
+            if ($relatives) {
+                $patient->update(['relatives' => $relatives->id]);
+            } else {
+                // Handle the case when no relative is found (optional)
+                return redirect()->back()->withErrors(['relatives' => 'Relative not found']);
+            }
+        }
 
         // Find the biograph entry
         $biograph = Biograph::findOrFail($id);

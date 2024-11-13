@@ -10,10 +10,10 @@
         <div class="w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                    Edit Patient Information
+                    Edit Doctor Information
                 </h1>
 
-                <form method="POST" action="{{ route('biographs.update', $patient->biograph->id) }}">
+                <form method="POST" action="{{ route('biographs.update', $doctor->biograph->id) }}">
                     @csrf
                     @method('PUT')
 
@@ -22,54 +22,62 @@
                         <div>
                             <div class="mb-4">
                                 <label for="surename" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Surename</label>
-                                <input type="text" name="surename" value="{{ $patient->biograph->surename ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                <input type="text" name="surename" value="{{ $doctor->biograph->surename ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                             </div>
 
                             <div class="mb-4">
                                 <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of Birth</label>
-                                <input type="date" name="date_of_birth" value="{{ $patient->biograph->date_of_birth ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                <input type="date" name="date_of_birth" value="{{ $doctor->biograph->date_of_birth ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                             </div>
 
                             <div class="mb-4">
                                 <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
-                                <textarea name="address" class="mt-1 block w-full p-2 border rounded-lg" required>{{ $patient->biograph->address ?? '' }}</textarea>
+                                <textarea name="address" class="mt-1 block w-full p-2 border rounded-lg" required>{{ $doctor->biograph->address ?? '' }}</textarea>
                             </div>
 
                             <div class="mb-4">
                                 <label for="religion" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Religion</label>
-                                <input type="text" name="religion" value="{{ $patient->biograph->religion ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                <input type="text" name="religion" value="{{ $doctor->biograph->religion ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                             </div>
 
                             <div class="mb-4">
                                 <label for="job" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Job</label>
-                                <input type="text" name="job" value="{{ $patient->biograph->job ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                <input type="text" name="job" value="{{ $doctor->biograph->job ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                             </div>
                             
                             <div class="mb-4">
-                                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                                <label for="relatives" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Relatives</label>
-                                <input type="text" name="relatives" value="{{ optional($patient->relative)->name ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg">
-                            </div>
+                                <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                                <label for="speciality_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Speciality</label>
+                                <select name="speciality_id" id="speciality_id" class="mt-1 block w-full p-2 border rounded-lg">
+                                    <!-- Loop through the $specialities collection to display each option -->
+                                    @foreach($specialities as $speciality)
+                                        <option value="{{ $speciality->id }}" 
+                                            {{ $doctor->speciality && $doctor->speciality->id === $speciality->id ? 'selected' : '' }}>
+                                            {{ $speciality->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>                            
                         </div>
 
                         <!-- Second Column -->
                         <div>
                             <div class="mb-4">
                                 <label for="nik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIK</label>
-                                <input type="text" name="nik" value="{{ $patient->biograph->nik ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                <input type="text" name="nik" value="{{ $doctor->biograph->nik ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                             </div>
 
                             <div class="mb-4">
                                 <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
                                 <select name="gender" class="mt-1 block w-full p-2 border rounded-lg" required>
-                                    <option value="laki-laki" {{ (isset($patient->biograph->gender) && $patient->biograph->gender == 'laki-laki') ? 'selected' : '' }}>Laki-laki</option>
-                                    <option value="perempuan" {{ (isset($patient->biograph->gender) && $patient->biograph->gender == 'perempuan') ? 'selected' : '' }}>Perempuan</option>
+                                    <option value="laki-laki" {{ (isset($doctor->biograph->gender) && $doctor->biograph->gender == 'laki-laki') ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="perempuan" {{ (isset($doctor->biograph->gender) && $doctor->biograph->gender == 'perempuan') ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                             </div>
 
                             <div class="mb-4">
                                 <label for="marriage_status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Marriage Status</label>
-                                <input type="text" name="marriage_status" value="{{ $patient->biograph->marriage_status ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
+                                <input type="text" name="marriage_status" value="{{ $doctor->biograph->marriage_status ?? '' }}" class="mt-1 block w-full p-2 border rounded-lg" required>
                             </div>
 
                             <div class="mb-4">
@@ -81,7 +89,7 @@
 
                     <div class="flex space-x-4 w-full">
                         <!-- Cancel Button -->
-                        <a href="{{ route('patients.index') }}" class="w-full text-gray-900 bg-gray-200 hover:bg-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+                        <a href="{{ route('doctors.index') }}" class="w-full text-gray-900 bg-gray-200 hover:bg-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
                             Back
                         </a>
 
