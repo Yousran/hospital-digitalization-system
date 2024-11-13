@@ -23,7 +23,7 @@
                                 <!-- Address Field -->
                                 <div class="mb-4">
                                     <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                                    <textarea name="description" class="mt-1 block w-full p-2 border rounded-lg" required></textarea>
+                                    <textarea name="description" class="mt-1 block w-full p-2 border rounded-lg"></textarea>
                                 </div>
                             </div>
                             <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Update</button>

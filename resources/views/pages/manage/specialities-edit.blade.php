@@ -27,8 +27,8 @@
                             @enderror
                         </div>
                         <div class="mb-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
-                            <textarea name="description" class="mt-1 block w-full p-2 border rounded-lg" required>{{ $speciality->description ?? '' }}</textarea>
+                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                            <textarea name="description" class="mt-1 block w-full p-2 border rounded-lg">{{ $speciality->description ?? '' }}</textarea>
                         </div>
                     </div>
 
