@@ -15,6 +15,26 @@ class PatientController extends Controller
         //
     }
 
+    public function datatable(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Jika ada pencarian, filter data berdasarkan nama atau email
+        if ($query) {
+            $data = Patient::where('id', 'LIKE', "%{$query}%")
+                        ->get();
+        } else {
+            $data = Patient::with('user')->get();
+        }
+
+        $columns = $data->isNotEmpty() ? array_keys($data->first()->getAttributes()) : [];
+
+        return response()->json([
+            'data' => $data,
+            'columns' => $columns
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -16,9 +16,10 @@ Route::get('/', function () {
 })->name('home');
 
 Route::resource('users', UserController::class);
-Route::post('/users/search', [UserController::class, 'search'])->name('users.search');
+Route::post('/users/datatable', [UserController::class, 'datatable'])->name('users.datatable');
 Route::resource('roles', RoleController::class);
 Route::resource('patients', PatientController::class);
+Route::post('/patients/datatable', [PatientController::class, 'datatable'])->name('patients.datatable');
 Route::resource('doctors', DoctorController::class);
 Route::resource('specialities', SpecialityController::class);
 Route::resource('biographs', BiographController::class);

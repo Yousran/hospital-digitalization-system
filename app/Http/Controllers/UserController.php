@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Biograph;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,29 +18,40 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('pages.manage.users', compact('users'));
+        $roles = Role::all();
+        return view('pages.manage.users', compact(['users','roles']));
     }
 
-    // public function datatable(){
-    //     $users = User::all()->first();
-    //     return compact('users');
-    // }
-
-    public function search(Request $request)
+    public function datatable(Request $request)
     {
-        $query = $request->input('query');
+        $search = $request->input('search');
 
-        $data = User::where('name', 'LIKE', "%{$query}%")
-                    ->orWhere('email', 'LIKE', "%{$query}%")
-                    ->get();
+        // Jika ada pencarian, filter data berdasarkan nama atau email
+        if ($search) {
+            $data = User::with('roles')  // Mengambil data roles terkait
+                        ->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('email', 'LIKE', "%{$search}%")
+                        ->get(['id', 'name', 'email']);  // Pilih kolom id, name, dan email
+        } else {
+            $data = User::with('roles')  // Mengambil data roles terkait
+                        ->get(['id', 'name', 'email']);  // Pilih kolom id, name, dan email
+        }
 
-        $columns = !empty($data) ? array_keys($data->first()->getAttributes()) : [];
-        return view('components.datatable-content', [
-            'data' => $data,
-            'columns' => $columns,
-            'routeDelete' => 'users.destroy'
-        ])->render();
 
+        // Membuat array untuk menyimpan data yang diinginkan
+        $result = $data->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->roles->pluck('name')->implode(', ')  // Mengambil nama-nama roles dan menggabungkannya
+            ];
+        });
+
+        return response()->json([
+            'data' => $result,
+            'columns' => ['id', 'name', 'email', 'role']  // Kolom yang ingin ditampilkan
+        ]);
     }
 
     /**
@@ -55,11 +68,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validasi data yang diterima dari form
-        $request->validate([
-            'name' => 'required|string|max:255',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'file_id' => 'nullable|integer',
+            'roles' => 'nullable|array', // Ensure roles is an array
+            'roles.*' => 'exists:roles,id',
             
         ]);
 
@@ -71,10 +86,16 @@ class UserController extends Controller
             'picture' => $request->file_id,
         ]);
 
-        $roles = UserRole::create([
-            'user_id' => $user->id,
-            'role_id' => 3,
-        ]);
+        // Sync the roles for the user (this will attach the selected roles and remove any unselected ones)
+        if ($request->has('roles')) {
+            $user->roles()->sync($validated['roles']);
+        }else {
+            $roles = UserRole::create([
+                'user_id' => $user->id,
+                'role_id' => 3,
+            ]);
+        }
+
 
         // Redirect ke halaman utama setelah sukses registrasi
         return redirect()->back()->with('message', 'User registered successfully');
@@ -91,47 +112,45 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        
-    }
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+    
+        return view('pages.manage.users-edit', compact(['user', 'roles']));
+    }     
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'current_password' => 'required|string',
+        // Validate the incoming data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:users,name,' . $user->id,
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'file_id' => 'nullable|integer',
+            'roles' => 'nullable|array', // Ensure roles is an array
+            'roles.*' => 'exists:roles,id', // Ensure each role exists in the roles table
         ]);
 
-        $user = User::findOrFail($id);
+        // Update the user information
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
 
-        // Cek apakah password lama sesuai
-        if (!Hash::check($request->current_password, $user->password)) {
-            return redirect()->back()->withErrors(['current_password' => 'The current password is incorrect.']);
-        }
-
-        // Data untuk update
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'picture' => $request->file_id,
-        ];
-
-        // Cek jika password baru diisi dan sesuai konfirmasi
+        // Update the password if provided
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password); // Hash password baru
+            $user->password = bcrypt($validated['password']);
         }
 
-        // Update user
-        $user->update($data);
+        $user->save();
 
-        return redirect()->back()->with('message', 'User updated successfully');
+        // Sync the roles for the user (this will attach the selected roles and remove any unselected ones)
+        if ($request->has('roles')) {
+            $user->roles()->sync($validated['roles']);
+        }
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     /**
