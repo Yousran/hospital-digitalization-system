@@ -23,10 +23,10 @@ Route::resource('doctors', DoctorController::class);
 Route::post('/doctors/datatable', [DoctorController::class, 'datatable'])->name('doctors.datatable');
 Route::resource('specialities', SpecialityController::class);
 Route::post('/specialities/datatable', [SpecialityController::class, 'datatable'])->name('specialities.datatable');
-Route::resource('medical-records', MedicalRecordController::class);
-Route::post('/medical-records/datatable', [MedicalRecordController::class, 'datatable'])->name('medical-records.datatable');
 Route::post('/roles/datatable', [RoleController::class, 'datatable'])->name('roles.datatable');
 Route::resource('roles', RoleController::class);
+Route::resource('medical-records', MedicalRecordController::class);
+Route::post('/medical-records/datatable', [MedicalRecordController::class, 'datatable'])->name('medical-records.datatable');
 Route::resource('biographs', BiographController::class);
 
 Route::controller(AuthenticateController::class)->group(function () {

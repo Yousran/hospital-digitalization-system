@@ -11,7 +11,7 @@ class MedicalRecord extends Pivot
     }
 
     public function patient(){
-        return $this->belongsTo(patient::class);
+        return $this->belongsTo(Patient::class);
     }
 
     public function medicines()
