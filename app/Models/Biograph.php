@@ -18,7 +18,11 @@ class Biograph extends Model
         'job',
         'file_id'
     ];
+    public function patient(){
+        return $this->hasOne(Patient::class);
+    }
+    
     public function user(){
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

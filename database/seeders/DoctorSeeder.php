@@ -19,6 +19,7 @@ class DoctorSeeder extends Seeder
     {
         Doctor::create([
             'user_id' => 1,
+            'biograph_id' => 1,
             'speciality_id' => 1,
             'rating' => 0,
         ]);

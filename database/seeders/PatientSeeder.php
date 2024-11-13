@@ -19,10 +19,17 @@ class PatientSeeder extends Seeder
     
         Patient::create([
             'user_id' => 1,
+            'biograph_id' => 1,
             'relatives' => null,
         ]);
         Patient::create([
             'user_id' => 2,
+            'biograph_id' => 2,
+            'relatives' => 1,
+        ]);
+        Patient::create([
+            'user_id' => null,
+            'biograph_id' => 3,
             'relatives' => 1,
         ]);
 

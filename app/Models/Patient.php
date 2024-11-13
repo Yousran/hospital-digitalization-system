@@ -13,6 +13,10 @@ class Patient extends Model
     public function relative(){
         return $this->belongsTo(User::class);
     }
+    
+    public function biograph(){
+        return $this->belongsTo(Biograph::class);
+    }
 
     public function medicalRecords(){
         return $this->hasMany(MedicalRecord::class);

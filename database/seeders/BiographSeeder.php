@@ -38,5 +38,18 @@ class BiographSeeder extends Seeder
             'job' => 'mahasiswa',
             'file_id' => null,
         ]);
+        
+        Biograph::create([
+            'user_id' => null,
+            'nik' => '7602010203040003',
+            'surename' => 'pasien tanpa user',
+            'date_of_birth' => '2004-03-27',
+            'gender' => 'perempuan',
+            'address' => 'jl. urip',
+            'religion' => 'islam',
+            'marriage_status' => 'belum menikah',
+            'job' => 'mahasiswa',
+            'file_id' => null,
+        ]);
     }
 }

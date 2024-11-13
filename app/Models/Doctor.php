@@ -9,6 +9,10 @@ class Doctor extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+   
+    public function biograph(){
+        return $this->belongsTo(Biograph::class);
+    }
 
     public function speciality(){
         return $this->belongsTo(Speciality::class);
