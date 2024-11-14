@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rates', function (Blueprint $table) {
-            $table->foreignId('medical_record_id')->constrained('medical_record')->cascadeOnDelete();
+            $table->foreignId('medical_record_id')->constrained('medical_records')->cascadeOnDelete();
             $table->integer('rate');
             $table->timestamps();
         });

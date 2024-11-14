@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class MedicalRecord extends Pivot
+class MedicalRecord extends Model
 {
+    protected $fillable = [
+        'patient_id',
+        'doctor_id',
+        'diagnosis',
+        'action',
+    ];
     public function doctor(){
         return $this->belongsTo(Doctor::class);
     }

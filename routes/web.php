@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\BiographController;
+use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MedicalRecordController;
@@ -46,8 +47,30 @@ Route::controller(AuthenticateController::class)->group(function () {
     Route::post('/password-reset', 'sendResetLinkEmail');
 });
 
+Route::controller(ConsultationController::class)->group(function () {
+    Route::get('/consultation', 'index')->name('consultation');
+    Route::post('/consultation', 'store')->name('consultation.store');
+    Route::get('/add-medicine', 'addMedicine')->name('consultation.addMedicine');
+});
+
 Route::controller(UserController::class)->group(function(){
     Route::get('/user/{username}', 'showProfile')->name('user.profile');
 });
 
 Route::post('files', [FileController::class, 'store'])->name('files.store');
+
+
+//https://flowbite.com/docs/forms/number-input/#min-and-max-values
+//https://flowbite.com/docs/components/card/#e-commerce-card
+
+//Consultation
+//https://flowbite.com/blocks/e-commerce/shopping-cart/
+
+//Dashboard 
+//https://flowbite.com/docs/components/card/#card-with-list
+//TODO: Medical Records adalah riwayat rekam medis, untuk dokter hanya bisa melihat rekam medis miliknya saja dan user hanya bisa melihat rekam medisnya saja
+//TODO: ubah datatables buatan menjadi datatables flowbite
+//TODO: Consultation bagian medicine card memunculkan stock dan juga memiliki field input description.
+//TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database
+//TODO: Profile page with data doctor, and medical records
+//TODO: refactor semua style dari tailwind

@@ -31,7 +31,6 @@ class AuthenticateController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'file_id' => 'nullable|integer',
-            
         ]);
 
         // Buat user baru dan login otomatis

@@ -1,13 +1,3 @@
-{{-- Medicine --}}
-{{-- https://flowbite.com/docs/forms/number-input/#min-and-max-values --}}
-{{-- https://flowbite.com/docs/components/card/#e-commerce-card --}}
-
-{{-- Consultation --}}
-{{-- https://flowbite.com/blocks/e-commerce/shopping-cart/ --}}
-
-{{-- Dashboard --}}
-{{-- https://flowbite.com/docs/components/card/#card-with-list --}}
-
 @extends('layouts.dashboard')
 
 @section('title', 'Medicines')
