@@ -14,7 +14,7 @@
 <body class="bg-light-500 dark:bg-dark-500">
     <x-navbar />
     <x-sidebar />
-    <section class="mt-12 p-4">
+    <section class="mt-[4.5rem] p-4">
         @yield('contents')
     </section>
     @yield('scripts')
