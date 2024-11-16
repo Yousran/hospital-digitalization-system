@@ -18,21 +18,52 @@ export default {
             },
             colors: {
                 //TODO: Theme Color
-                "primary": "#5D80AB",
-                "primary-50": "#81A1C1",
-                "secondary": "#4C566A",
-                "accent": "#88C0D0",
-                "neutral-100": "#D8DEE9",
-                "neutral-50": "#E5E9F0",
-                "neutral-25": "#ECEFF4",
-                "info": "#00a4cb",
-                "success": "#009000",
-                "warning": "#e69400",
-                "error": "#ff7480",
+                "primary": {
+                "50": "#eff2f7",
+                "100": "#dfe6ee",
+                "200": "#beccdd",
+                "300": "#9eb3cd",
+                "400": "#7d99bc",
+                "500": "#5d80ab",
+                "600": "#4a6689",
+                "700": "#384d67",
+                "800": "#253344",
+                "900": "#131a22"
+                },
+                "secondary": {
+                "50": "#eff4f5",
+                "100": "#e0e9ec",
+                "200": "#c0d3d8",
+                "300": "#a1bec5",
+                "400": "#81a8b1",
+                "500": "#62929e",
+                "600": "#4e757e",
+                "700": "#3b585f",
+                "800": "#273a3f",
+                "900": "#141d20"
+                },
+                "light" : {
+                    "500" : "#FDFDFF",
+                    "600" : "#EDEDE9",
+                    "700" : "#E3E3DD",
+                    "800" : "#DADAD2",
+                    "900" : "#D1D1C7",
+                },
+                "dark" : {
+                    "100" : "#61686B",
+                    "200" : "#575D60",
+                    "300" : "#4E5356",
+                    "400" : "#393D3F",
+                    "500" : "#262A2B",
+                },
+                transparent: 'transparent',
             }
         },
     },
     plugins: [
-        require('flowbite/plugin'),
+        require('flowbite/plugin')({
+            datatables: true,
+            charts: true,
+        }),
     ],
 };

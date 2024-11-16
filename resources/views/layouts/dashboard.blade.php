@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head data-theme="dark">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,10 +11,12 @@
     <title>@yield('title')</title>
 </head>
 
-<body>
+<body class="bg-light-500 dark:bg-dark-500">
     <x-navbar />
     <x-sidebar />
-    @yield('contents')
+    <section class="mt-12 p-4">
+        @yield('contents')
+    </section>
     @yield('scripts')
 </body>
 

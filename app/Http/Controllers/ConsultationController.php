@@ -22,7 +22,6 @@ class ConsultationController extends Controller
     {
         $medicineName = $request->query('name');
         
-        // Fetch the medicine based on the name or add any logic needed to retrieve its details
         $medicine = Medicine::with('medicinePicture')->where('name', $medicineName)->first();
         
         // Ensure medicine exists

@@ -11,8 +11,16 @@
     <title>@yield('title')</title>
 </head>
 
-<body>
-    @yield('contents')
+<body class="p-0 m-0 min-h-screen max-h-full bg-light-500 dark:bg-dark-500">
+        <section class="flex flex-col items-center justify-center h-full p-4">
+            <a href="{{ route('home') }}" class="flex items-center mb-4 text-2xl font-semibold text-dark-500 dark:text-light-500">
+                <img src="{{ asset('logo.png') }}" class="w-8 h-8 mr-4" alt="Logo" />
+                Rumah Sehat
+            </a>
+            <div class="p-4 min-w-[40vw] w-full md:w-fit rounded-lg border border-light-700 dark:border-dark-300 bg-light-600 dark:bg-dark-400 shadow-md">
+                @yield('contents')
+            </div>
+        </section>
     @yield('scripts')
 </body>
 

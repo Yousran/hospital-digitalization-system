@@ -13,41 +13,7 @@ class PatientController extends Controller
     public function index()
     {
         $patients = Patient::all();
-        return view('pages.manage.patients', compact('patients'));
-    }
-
-    public function datatable(Request $request)
-    {
-        $search = $request->input('search');
-
-        // Fetch data with relationships and filtering if a search term is provided
-        if ($search) {
-            $data = Patient::with(['biograph']) // Load user and biograph relationships
-                        ->whereHas('biograph', function ($query) use ($search) {
-                            $query->where('nik', 'LIKE', "%{$search}%")
-                                ->orWhere('surename', 'LIKE', "%{$search}%");
-                        })
-                        ->get();
-        } else {
-            $data = Patient::with(['biograph'])->get();
-        }
-
-        // Format response
-        $result = $data->map(function ($patient) {
-            return [
-                'id' => $patient->id,
-                'name' => optional($patient->user)->name,
-                'surename' => optional($patient->biograph)->surename,
-                'nik' => optional($patient->biograph)->nik,
-                'gender' => optional($patient->biograph)->gender,
-                'date_of_birth' => optional($patient->biograph)->date_of_birth,
-            ];
-        });
-
-        return response()->json([
-            'data' => $result,
-            'columns' => ['id', 'name', 'surename', 'nik', 'gender', 'date_of_birth']
-        ]);
+        return view('pages.tables.patients.index', compact('patients'));
     }
 
     /**
@@ -55,7 +21,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.tables.patients.create');
     }
 
     /**
@@ -80,7 +46,7 @@ class PatientController extends Controller
     public function edit(string $id)
     {
         $patient = Patient::with('relative')->findOrFail($id);
-        return view('pages.manage.patients-edit', compact(['patient']));
+        return view('pages.tables.patients.edit', compact(['patient']));
     }
 
     /**

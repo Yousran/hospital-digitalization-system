@@ -13,36 +13,7 @@ class SpecialityController extends Controller
     public function index()
     {
         $specialities = Speciality::all();
-        return view('pages.manage.specialities', compact('specialities'));
-    }
-
-    public function datatable(Request $request)
-    {
-        $search = $request->input('search');
-
-        // Jika ada pencarian, filter data berdasarkan nama atau email
-        if ($search) {
-            $data = Speciality::where('name', 'LIKE', "%{$search}%")
-                        ->orWhere('description', 'LIKE', "%{$search}%")
-                        ->get(['id', 'name', 'description']);
-        } else {
-            $data = Speciality::get(['id', 'name', 'description']);
-        }
-
-
-        // Membuat array untuk menyimpan data yang diinginkan
-        $result = $data->map(function ($speciality) {
-            return [
-                'id' => $speciality->id,
-                'name' => $speciality->name,
-                'description' => $speciality->description,
-            ];
-        });
-
-        return response()->json([
-            'data' => $result,
-            'columns' => ['id', 'name', 'description']  // Kolom yang ingin ditampilkan
-        ]);
+        return view('pages.tables.specialities.index', compact('specialities'));
     }
 
     /**
@@ -50,7 +21,7 @@ class SpecialityController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.tables.specialities.create');
     }
 
     /**
@@ -88,7 +59,7 @@ class SpecialityController extends Controller
     {
         $speciality = Speciality::findOrFail($id);
     
-        return view('pages.manage.specialities-edit', compact(['speciality']));
+        return view('pages.tables.specialities.edit', compact(['speciality']));
     }
 
     /**

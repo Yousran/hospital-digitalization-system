@@ -13,54 +13,19 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $doctors = Doctor::with(['biograph','speciality'])->get();
-        $specialities = Speciality::all();
-        return view('pages.manage.doctors',compact('doctors', 'specialities'));
-    }
-
-    public function datatable(Request $request)
-    {
-        $search = $request->input('search');
-
-        // Fetch data with relationships and filtering if a search term is provided
-        $query = Doctor::with(['user', 'biograph', 'speciality']); // Include related models
-
-        if ($search) {
-            $data = Doctor::with(['biograph', 'speciality'])
-                    ->when($search, function ($query) use ($search) {
-                        $query->whereHas('biograph', function ($q) use ($search) {
-                            $q->where('nik', 'LIKE', "%{$search}%")
-                              ->orWhere('surename', 'LIKE', "%{$search}%");
-                        })
-                        ->orWhereHas('speciality', function ($q) use ($search) {
-                            $q->where('name', 'LIKE', "%{$search}%");
-                        })
-                        ->orWhereHas('user', function ($q) use ($search) {
-                            $q->where('name', 'LIKE', "%{$search}%");
-                        });
-                    })
-                    ->get();
-        }else {
-            $data = $query->get();
-        }
-
-
-        // Format response
-        $result = $data->map(function ($doctor) {
-            return [
-                'id' => $doctor->id,
-                'name' => optional($doctor->user)->name,
-                'speciality' => optional($doctor->speciality)->name,
-                'surename' => optional($doctor->biograph)->surename,
-                'nik' => optional($doctor->biograph)->nik,
-                'rating' => $doctor->rating,
-            ];
-        });
-
-        return response()->json([
-            'data' => $result,
-            'columns' => ['id', 'name', 'speciality', 'surename', 'nik', 'rating']
-        ]);
+        $doctors = Doctor::with(['biograph', 'speciality'])
+            ->get(['id','speciality_id', 'biograph_id']) // Ambil hanya kolom yang dibutuhkan dari tabel doctors
+            ->map(function ($doctor) {
+                return [
+                    'id' => $doctor->id,
+                    'surename' => $doctor->biograph->surename ?? '-', // Tampilkan default jika biograph tidak ada
+                    'nik' => $doctor->biograph->nik ?? '-', // Tampilkan default jika nik tidak ada
+                    'speciality' => $doctor->speciality->name ?? '-', // Tampilkan default jika speciality tidak ada
+                ];
+            });
+    
+        $doctors = new \Illuminate\Database\Eloquent\Collection($doctors); // Pastikan koleksi kompatibel dengan Laravel Collection
+        return view('pages.tables.doctors.index', compact('doctors'));
     }
 
     /**
@@ -68,7 +33,8 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        //
+        $specialities = Speciality::all();
+        return view('pages.tables.doctors.create',compact('specialities'));
     }
 
     /**
@@ -94,7 +60,7 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::findOrFail($id);
         $specialities = Speciality::all();
-        return view('pages.manage.doctors-edit', compact(['doctor','specialities']));
+        return view('pages.tables.doctors.edit', compact(['doctor','specialities']));
     }
 
     /**

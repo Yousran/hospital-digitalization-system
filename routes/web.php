@@ -11,6 +11,10 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
+use App\Models\Biograph;
+use App\Models\Medicine;
+use App\Models\Patient;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,17 +22,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::resource('users', UserController::class);
-Route::post('/users/datatable', [UserController::class, 'datatable'])->name('users.datatable');
 Route::resource('patients', PatientController::class);
-Route::post('/patients/datatable', [PatientController::class, 'datatable'])->name('patients.datatable');
 Route::resource('doctors', DoctorController::class);
-Route::post('/doctors/datatable', [DoctorController::class, 'datatable'])->name('doctors.datatable');
 Route::resource('specialities', SpecialityController::class);
-Route::post('/specialities/datatable', [SpecialityController::class, 'datatable'])->name('specialities.datatable');
-Route::post('/roles/datatable', [RoleController::class, 'datatable'])->name('roles.datatable');
 Route::resource('roles', RoleController::class);
 Route::resource('medical-records', MedicalRecordController::class);
-Route::post('/medical-records/datatable', [MedicalRecordController::class, 'datatable'])->name('medical-records.datatable');
 
 Route::resource('biographs', BiographController::class);
 
@@ -59,6 +57,12 @@ Route::controller(UserController::class)->group(function(){
 
 Route::post('files', [FileController::class, 'store'])->name('files.store');
 
+Route::get('test',function(){
+    $biographs = Patient::all();
+    $roles = Role::all();
+    return view('test', compact('roles'));
+})->name('test');
+
 
 //https://flowbite.com/docs/forms/number-input/#min-and-max-values
 //https://flowbite.com/docs/components/card/#e-commerce-card
@@ -68,9 +72,10 @@ Route::post('files', [FileController::class, 'store'])->name('files.store');
 
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
-//TODO: Medical Records adalah riwayat rekam medis, untuk dokter hanya bisa melihat rekam medis miliknya saja dan user hanya bisa melihat rekam medisnya saja
 //TODO: ubah datatables buatan menjadi datatables flowbite
+//TODO: refactor semua style dari tailwind
+
+//TODO: Medical Records adalah riwayat rekam medis, untuk dokter hanya bisa melihat rekam medis miliknya saja dan user hanya bisa melihat rekam medisnya saja
 //TODO: Consultation bagian medicine card memunculkan stock dan juga memiliki field input description.
 //TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database
 //TODO: Profile page with data doctor, and medical records
-//TODO: refactor semua style dari tailwind

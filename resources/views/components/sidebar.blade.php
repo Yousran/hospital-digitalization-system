@@ -1,23 +1,23 @@
 <div id="drawer-navigation"
-    class="fixed top-16 left-0 z-40 w-64 h-[calc(100vh-4rem)] p-4 overflow-y-auto transition-transform -translate-x-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700"
+    class="fixed top-[4.5rem] left-0 z-40 w-64 h-full p-4 overflow-y-auto transition-transform -translate-x-full bg-light-600 dark:bg-dark-400"
     tabindex="-1" aria-labelledby="drawer-navigation-label">
-    <h5 id="drawer-navigation-label" class="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Menu</h5>
+    <h5 id="drawer-navigation-label" class="text-base font-semibold text-dark-300 uppercase dark:text-light-800">Menu</h5>
     <div class="py-4 overflow-y-auto">
         <ul class="space-y-2 font-medium">
             <li>
                 <a href="#"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
-                        class='bx bx-pie-chart-alt-2 flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
+                        class='bx bx-pie-chart-alt-2 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
                     <span class="ms-3">Dashboard</span>
                 </a>
             </li>
             <li>
                 <button type="button"
-                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    class="flex items-center w-full p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group"
                     aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
                     <i
-                        class='bx bx-table flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
+                        class='bx bx-table flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Tables</span>
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 10 6">
@@ -28,69 +28,69 @@
                 <ul id="dropdown-example" class="hidden py-2 space-y-2">
                     <li>
                         <a href="{{ route('users.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Users</a>
+                            class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">Users</a>
                     </li>
                     <li>
                         <a href="{{ route('patients.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Patients</a>
+                            class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">Patients</a>
                     </li>
                     <li>
                         <a href="{{ route('doctors.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Doctors</a>
+                            class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">Doctors</a>
                     </li>
                     <li>
                         <a href="{{ route('specialities.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Specialities</a>
+                            class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">Specialities</a>
                     </li>
                     <li>
                         <a href="{{ route('roles.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Roles</a>
+                            class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">Roles</a>
                     </li>
                     <li>
                         <a href="{{ route('medical-records.index') }}"
-                            class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Medical
+                            class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">Medical
                             Records</a>
                     </li>
                 </ul>
             </li>
             <li>
                 <a href="{{ route('consultation') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
-                        class='bx bx-health flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
+                        class='bx bx-health flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
                     <span class="ms-3">Consultation</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('medicines.index') }}"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
-                        class='bx bx-capsule flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
+                        class='bx bx-capsule flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
                     <span class="ms-3">Medicine</span>
                 </a>
             </li>
             <li>
                 <a href="#"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
-                        class='bx bx-calendar flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
+                        class='bx bx-calendar flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
                     <span class="ms-3">Schedule</span>
                 </a>
             </li>
             <li>
                 <a href="#"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
-                        class='bx bx-history flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
+                        class='bx bx-history flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
                     <span class="ms-3">Logs</span>
                 </a>
             </li>
             <li>
                 <a href="#"
-                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
-                        class='bx bx-cog flex-shrink-0 w-5 h-5 text-2xl text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'></i>
-                    <span class="ms-3">Setting</span>
+                        class='bx bx-cog flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
+                    <span class="ms-3">Settings</span>
                 </a>
             </li>
         </ul>

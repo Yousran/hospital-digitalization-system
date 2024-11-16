@@ -9,25 +9,18 @@ use Illuminate\View\Component;
 
 class Datatable extends Component
 {
-    public string $routeDelete;
-    public string $routeDatatable;
+    public array|Collection $data;
+    public string $datatableId;
+    public string $routeCreate;
     public string $routeEdit;
-    public string $targetModalCreate;
-    public string $dataName;
-
-    public function __construct(
-        string $routeDelete = '', 
-        string $targetModalCreate = '', 
-        string $routeEdit = '', 
-        string $routeDatatable = '',
-        string $dataName = '')
+    public string $routeDelete;
+    public function __construct(Collection $data, string $datatableId, string $routeDelete, string $routeEdit, string $routeCreate)
     {
-        $this->routeDatatable = $routeDatatable;
+        $this->data = $data->toArray();
+        $this->datatableId = $datatableId;
+        $this->routeCreate = $routeCreate;
         $this->routeEdit = $routeEdit;
-        $this->dataName = $dataName;
         $this->routeDelete = $routeDelete;
-        $this->targetModalCreate = $targetModalCreate;
-        // $this->columns = !empty($data) ? array_keys($data->first()->getAttributes()) : [];
     }
 
     /**
@@ -35,8 +28,8 @@ class Datatable extends Component
      */
     public function render(): View|Closure|string
     {
-        // return dd($this->data);
-        // return view('components.datatable', ['data' => $this->data]);
-        return view('components.datatable');
+        $data = $this->data;
+        // return dd($data);
+        return view('components.datatable', compact('data'));
     }
 }

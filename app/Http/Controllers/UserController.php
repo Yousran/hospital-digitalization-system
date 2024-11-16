@@ -6,7 +6,6 @@ use App\Models\Biograph;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
-use Database\Seeders\RoleSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,49 +16,27 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $roles = Role::all();
-        return view('pages.manage.users', compact(['users','roles']));
-    }
-
-    public function datatable(Request $request)
-    {
-        $search = $request->input('search');
-
-        // Jika ada pencarian, filter data berdasarkan nama atau email
-        if ($search) {
-            $data = User::with('roles')  // Mengambil data roles terkait
-                        ->where('name', 'LIKE', "%{$search}%")
-                        ->orWhere('email', 'LIKE', "%{$search}%")
-                        ->get(['id', 'name', 'email']);  // Pilih kolom id, name, dan email
-        } else {
-            $data = User::with('roles')  // Mengambil data roles terkait
-                        ->get(['id', 'name', 'email']);  // Pilih kolom id, name, dan email
-        }
-
-
-        // Membuat array untuk menyimpan data yang diinginkan
-        $result = $data->map(function ($user) {
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->roles->pluck('name')->implode(', ')  // Mengambil nama-nama roles dan menggabungkannya
-            ];
-        });
-
-        return response()->json([
-            'data' => $result,
-            'columns' => ['id', 'name', 'email', 'role']  // Kolom yang ingin ditampilkan
-        ]);
-    }
+        $users = User::with('roles:id,name')
+                ->get(['id', 'name', 'email'])
+                ->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'roles' => $user->roles->pluck('name')->join(' '), // Ubah array menjadi string
+                    ];
+                });
+        $users = new \Illuminate\Database\Eloquent\Collection($users);
+        return view('pages.tables.users.index', compact('users'));
+    }    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return view('pages.tables.users.create', compact('roles'));
     }
 
     /**
@@ -67,18 +44,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi data yang diterima dari form
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'file_id' => 'nullable|integer',
-            'roles' => 'nullable|array', // Ensure roles is an array
+            'roles' => 'nullable|array',
             'roles.*' => 'exists:roles,id',
             
         ]);
 
-        // Buat user baru dan login otomatis
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -86,7 +61,6 @@ class UserController extends Controller
             'picture' => $request->file_id,
         ]);
 
-        // Sync the roles for the user (this will attach the selected roles and remove any unselected ones)
         if ($request->has('roles')) {
             $user->roles()->sync($validated['roles']);
         }else {
@@ -96,8 +70,6 @@ class UserController extends Controller
             ]);
         }
 
-
-        // Redirect ke halaman utama setelah sukses registrasi
         return redirect()->back()->with('message', 'User registered successfully');
     }
 
@@ -117,7 +89,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::all();
     
-        return view('pages.manage.users-edit', compact(['user', 'roles']));
+        return view('pages.tables.users.edit', compact(['user', 'roles']));
     }     
 
     /**

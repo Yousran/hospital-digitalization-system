@@ -15,11 +15,11 @@ class Doctor extends Model
     }
    
     public function biograph(){
-        return $this->belongsTo(Biograph::class);
+        return $this->belongsTo(Biograph::class, 'biograph_id');
     }
 
     public function speciality(){
-        return $this->belongsTo(Speciality::class);
+        return $this->belongsTo(Speciality::class, 'speciality_id');
     }
 
     public function medicalRecords(){

@@ -9,46 +9,26 @@ use Illuminate\Http\Request;
 
 class MedicalRecordController extends Controller
 {
-    // Index method to return medical record details
     public function index()
     {
-        // Fetch all medical records with patient and doctor relationships
-        $medicalRecords = MedicalRecord::with(['patient.biograph', 'doctor.biograph'])->get()->all();
-
-        return view('pages.manage.medical-records',compact('medicalRecords'));
-    }
-
-    // Datatable method with search functionality
-    public function datatable(Request $request)
-    {
-        $search = $request->input('search');
-
-        // Fetch data with relationships and filtering if a search term is provided
-        $query = MedicalRecord::with(['patient.biograph', 'doctor.biograph'])
-            ->when($search, function ($query) use ($search) {
-                $query->whereHas('patient.biograph', function ($query) use ($search) {
-                    $query->where('surename', 'LIKE', "%{$search}%")
-                        ->orWhere('nik', 'LIKE', "%{$search}%");
-                })
-                ->orWhereHas('doctor.biograph', function ($query) use ($search) {
-                    $query->where('surename', 'LIKE', "%{$search}%");
-                });
-            });
-
-        $medicalRecords = $query->get()->map(function ($record) {
+        $medicalRecords = MedicalRecord::with([
+            'patient.biograph:id,nik,surename',
+            'doctor.biograph:id,nik,surename'
+        ])
+        ->get()
+        ->map(function ($record) {
             return [
                 'id' => $record->id,
-                'patient_surename' => optional($record->patient->biograph)->surename,
-                'diagnosis' => $record->diagnosis,
-                'action' => $record->action,
-                'doctor_surename' => optional($record->doctor->biograph)->surename,
+                'patient_surename' => $record->patient->biograph->surename ?? '-', // Surename pasien
+                'patient_nik' => $record->patient->biograph->nik ?? '-', // NIK pasien
+                'doctor_surename' => $record->doctor->biograph->surename ?? '-', // Surename dokter
+                'doctor_nik' => $record->doctor->biograph->nik ?? '-', // NIK dokter
             ];
         });
 
-        return response()->json([
-            'data' => $medicalRecords,
-            'columns' => ['id', 'patient_surename', 'diagnosis', 'action', 'doctor_surename']
-        ]);
+        $medicalRecords = new \Illuminate\Database\Eloquent\Collection($medicalRecords);
+
+        return view('pages.tables.medical-records.index', compact('medicalRecords'));
     }
 
     /**
@@ -56,7 +36,7 @@ class MedicalRecordController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.tables.medical-records.create');
     }
 
     /**
@@ -119,7 +99,7 @@ class MedicalRecordController extends Controller
         $medicalRecord = MedicalRecord::with(['doctor.biograph', 'patient.biograph'])->findOrFail($id);
     
         // Return the edit view with the medical record data
-        return view('pages.manage.medical-records-edit', compact('medicalRecord'));
+        return view('pages.tables.medical-records.edit', compact('medicalRecord'));
     }    
 
     /**

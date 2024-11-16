@@ -13,37 +13,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('pages.manage.roles', compact('roles'));
-    }
-
-    public function datatable(Request $request)
-    {
-        $search = $request->input('search');
-
-        // Jika ada pencarian, filter data berdasarkan nama atau email
-        if ($search) {
-            $data = Role::where('name', 'LIKE', "%{$search}%")
-                        ->orWhere('description', 'LIKE', "%{$search}%")
-                        ->get(['id', 'name', 'description', 'badge_colour']);
-        } else {
-            $data = Role::get(['id', 'name', 'description', 'badge_colour']);
-        }
-
-
-        // Membuat array untuk menyimpan data yang diinginkan
-        $result = $data->map(function ($role) {
-            return [
-                'id' => $role->id,
-                'name' => $role->name,
-                'description' => $role->description,
-                'badge_colour'=> $role->badge_colour,
-            ];
-        });
-
-        return response()->json([
-            'data' => $result,
-            'columns' => ['id', 'name', 'description','badge_colour']  // Kolom yang ingin ditampilkan
-        ]);
+        return view('pages.tables.roles.index', compact('roles'));
     }
 
     /**
@@ -51,9 +21,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.tables.roles.create');
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -72,10 +42,10 @@ class RoleController extends Controller
             'description' => $request->description,
             'badge_colour' => $request->badge_colour,
         ]);
-
+        
         return redirect()->back()->with('message', 'Role registered successfully');
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -83,15 +53,16 @@ class RoleController extends Controller
     {
         //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $role = Role::findOrFail($id);
+        
     
-        return view('pages.manage.roles-edit', compact(['role']));
+        return view('pages.tables.roles.edit', compact(['role']));
     }
 
     /**
