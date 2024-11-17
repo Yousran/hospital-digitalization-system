@@ -62,11 +62,27 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('authorized-medical-records.doctor') }}"
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
+                    <i
+                        class='bx bx-list-ul flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
+                    <span class="ms-3">Doctor Medical Records</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('authorized-medical-records.patient') }}"
+                    class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
+                    <i
+                        class='bx bx-list-ul flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
+                    <span class="ms-3">Medical Records</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('medicines.index') }}"
                     class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
                         class='bx bx-capsule flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>
-                    <span class="ms-3">Medicine</span>
+                    <span class="ms-3">Medicines</span>
                 </a>
             </li>
             <li>

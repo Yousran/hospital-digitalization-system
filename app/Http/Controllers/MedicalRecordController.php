@@ -19,10 +19,10 @@ class MedicalRecordController extends Controller
         ->map(function ($record) {
             return [
                 'id' => $record->id,
-                'patient_surename' => $record->patient->biograph->surename ?? '-', // Surename pasien
-                'patient_nik' => $record->patient->biograph->nik ?? '-', // NIK pasien
-                'doctor_surename' => $record->doctor->biograph->surename ?? '-', // Surename dokter
-                'doctor_nik' => $record->doctor->biograph->nik ?? '-', // NIK dokter
+                'patient_surename' => $record->patient->biograph->surename ?? '-', 
+                'patient_nik' => $record->patient->biograph->nik ?? '-',
+                'doctor_surename' => $record->doctor->biograph->surename ?? '-',
+                'doctor_nik' => $record->doctor->biograph->nik ?? '-',
             ];
         });
 

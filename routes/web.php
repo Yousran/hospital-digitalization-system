@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\BiographController;
-use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MedicalRecordController;
@@ -11,8 +10,8 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
-use App\Models\Biograph;
-use App\Models\Medicine;
+use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\AuthorizedMedicalRecordController;
 use App\Models\Patient;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +50,11 @@ Route::controller(ConsultationController::class)->group(function () {
     Route::post('/add-medicine', 'addMedicine')->name('consultation.addMedicine');
 });
 
+Route::controller(AuthorizedMedicalRecordController::class)->group(function () {
+    Route::get('/authorized-medical-records/patient', 'patient')->name('authorized-medical-records.patient');
+    Route::get('/authorized-medical-records/doctor', 'doctor')->name('authorized-medical-records.doctor');
+});
+
 Route::controller(UserController::class)->group(function(){
     Route::get('/user/{username}', 'showProfile')->name('user.profile');
 });
@@ -72,10 +76,13 @@ Route::get('test',function(){
 
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
-//TODO: ubah datatables buatan menjadi datatables flowbite
-//TODO: refactor semua style dari tailwind
 
-//TODO: Medical Records adalah riwayat rekam medis, untuk dokter hanya bisa melihat rekam medis miliknya saja dan user hanya bisa melihat rekam medisnya saja
-//TODO: Consultation bagian medicine card memunculkan stock dan juga memiliki field input description.
+//TODO: Landing Page
+//TODO: Login and Register Refactor
+
+//TODO: Consultation bagian medicine card memiliki field input description.
+//TODO: Consultation bagian medicine card bisa di hapus atau undo.
 //TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database
+
+//TODO: Rating
 //TODO: Profile page with data doctor, and medical records
