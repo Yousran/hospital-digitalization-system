@@ -119,7 +119,7 @@
 
             <!-- Settings (Placeholder, Always Visible) -->
             <li>
-                <a href="#"
+                <a href="{{ route('settings') }}"
                     class="flex items-center p-2 text-dark-300 rounded-lg dark:text-light-800 hover:bg-light-500 hover:text-dark-500 dark:hover:text-light-500 dark:hover:bg-dark-500 group">
                     <i
                         class='bx bx-cog flex-shrink-0 w-5 h-5 text-2xl text-dark-300 transition duration-75 dark:text-light-800 group-hover:text-dark-500 dark:group-hover:text-light-500'></i>

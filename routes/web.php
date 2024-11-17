@@ -24,6 +24,10 @@ Route::get('test',function(){
     return view('test', compact('roles'));
 })->name('test');
 
+Route::get('settings', function () {
+    return view('pages.settings');
+})->name('settings');
+
 Route::middleware(['log'])->group(function () {
     Route::get('/', function () {
         return view('layouts.landing');

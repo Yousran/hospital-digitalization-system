@@ -13,6 +13,17 @@
             scroll-behavior: smooth;
         }
     </style>
+    <!-- Theme Loader -->
+    <script>
+        const savedTheme = localStorage.getItem('color-theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else if (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 
 <body class="bg-light-500 dark:bg-dark-500">
