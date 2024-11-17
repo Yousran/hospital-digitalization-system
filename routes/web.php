@@ -12,6 +12,7 @@ use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\AuthorizedMedicalRecordController;
+use App\Http\Controllers\DashboardController;
 use App\Models\Patient;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts.landing');
 })->name('home');
+
+Route::controller(DashboardController::class)->group(function () {
+    Route::get('/dashboard', 'index')->name('dashboard');
+    Route::get('/chart-medical-records', 'chartMedicalRecords')->name('chartMedicalRecords');
+    Route::get('/fetch-active-users', 'fetchActiveUsers')->name('fetchActiveUsers');
+    Route::get('/fetch-active-doctors', 'fetchActiveDoctors')->name('fetchActiveDoctors');
+    Route::get('/fetch-active-patients', 'fetchActivePatients')->name('fetchActivePatients');
+    Route::get('/fetch-doctor-latest-patients', 'fetchLatestPatients')->name('fetchDoctorLatestPatients');
+});
+
 
 Route::resource('users', UserController::class);
 Route::resource('patients', PatientController::class);
