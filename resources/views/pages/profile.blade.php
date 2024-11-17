@@ -1,7 +1,6 @@
 @extends('layouts.dashboard')
 
 @section('contents')
-    <section class="bg-white mt-16 px-10 max-h-full h-screen antialiased dark:bg-gray-900 md:py-8">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Card 1 -->
             <x-profile-card>
@@ -244,5 +243,4 @@
                 </x-profile-card>
             </div>
         </div>
-    </section>
 @endsection

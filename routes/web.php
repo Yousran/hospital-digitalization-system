@@ -48,7 +48,7 @@ Route::controller(AuthenticateController::class)->group(function () {
 Route::controller(ConsultationController::class)->group(function () {
     Route::get('/consultation', 'index')->name('consultation');
     Route::post('/consultation', 'store')->name('consultation.store');
-    Route::get('/add-medicine', 'addMedicine')->name('consultation.addMedicine');
+    Route::post('/add-medicine', 'addMedicine')->name('consultation.addMedicine');
 });
 
 Route::controller(UserController::class)->group(function(){

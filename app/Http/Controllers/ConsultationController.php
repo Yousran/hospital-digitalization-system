@@ -20,19 +20,22 @@ class ConsultationController extends Controller
 
     public function addMedicine(Request $request)
     {
-        $medicineName = $request->query('name');
-        
+        $medicineName = $request->input('name');
+    
+        // Cari medicine berdasarkan nama dengan relasi medicinePicture
         $medicine = Medicine::with('medicinePicture')->where('name', $medicineName)->first();
-        
-        // Ensure medicine exists
+    
+        // Pastikan medicine ditemukan
         if (!$medicine) {
             return response()->json(['error' => 'Medicine not found'], 404);
         }
-
-        // Return the medicine component as HTML
-        $componentHtml = view('components.medicine-card', compact('medicine'))->render();
-        
-        return response()->json(['html' => $componentHtml]);
+    
+    
+        // Render komponen medicine-card
+        $html = view('components.medicine-card', compact('medicine'))->render();
+    
+        // Kembalikan HTML sebagai respon
+        return response($html);
     }
 
 
