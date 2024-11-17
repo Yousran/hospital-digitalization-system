@@ -14,7 +14,7 @@ class Datatable extends Component
     public string $routeCreate;
     public string $routeEdit;
     public string $routeDelete;
-    public function __construct(Collection $data, string $datatableId, string $routeDelete, string $routeEdit, string $routeCreate)
+    public function __construct(Collection $data, string $datatableId, string $routeDelete = '', string $routeEdit = '', string $routeCreate = '')
     {
         $this->data = $data->toArray();
         $this->datatableId = $datatableId;
