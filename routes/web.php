@@ -77,9 +77,6 @@ Route::get('test',function(){
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
 
-//TODO: Landing Page
-//TODO: Login and Register Refactor
-
 //TODO: Consultation bagian medicine card memiliki field input description.
 //TODO: Consultation bagian medicine card bisa di hapus atau undo.
 //TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('badge_colour')->nullable()->default('bg-blue-500');
+            $table->string('badge_colour')->nullable()->default('bg-primary-500');
             $table->timestamps();
         });
     }

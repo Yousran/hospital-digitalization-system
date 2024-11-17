@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Biograph;
+use App\Models\MedicalRecord;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
@@ -151,7 +152,24 @@ class UserController extends Controller
     {
         $user = User::with(['roles', 'doctor', 'profilPicture', 'patient', 'biograph'])->where('name', $username)->firstOrFail();
 
+        $medicalRecords = MedicalRecord::with([
+            'patient.biograph:id,nik,surename',
+            'doctor.biograph:id,nik,surename'
+        ])
+        ->whereHas('patient', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })
+        ->get()
+        ->map(function ($record) {
+            return [
+                // 'id' => $record->id,
+                'tanggal' => $record->created_at ?? '-',
+                'diagnosis' => $record->diagnosis ?? '-', 
+                'action' => $record->action ?? '-',
+            ];
+        });
+        $medicalRecords = new \Illuminate\Database\Eloquent\Collection($medicalRecords);
         // return dd($user->profilPicture->path);
-        return view('pages.profile', compact('user'));
+        return view('pages.profile', compact(['user','medicalRecords']));
     }
 }

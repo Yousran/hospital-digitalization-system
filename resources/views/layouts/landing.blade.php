@@ -79,7 +79,7 @@
             Kami selalu berinovasi untuk menghadirkan pengalaman kesehatan yang lebih baik bagi Anda dan keluarga. Dengan tim dokter, perawat, dan tenaga medis yang berpengalaman, serta dukungan teknologi terbaru, kami siap mendampingi Anda dalam setiap langkah perjalanan kesehatan Anda.
         </p>        
     </section>
-    <section class="h-screen flex flex-col justify-center items-center bg-gray-50 dark:bg-dark-600" id="services">
+    <section class="h-screen flex flex-col justify-center items-center" id="services">
         <h2 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-4xl xl:text-5xl dark:text-white">Our Services</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-screen-xl px-4 mx-auto">
             <div class="bg-white dark:bg-dark-700 p-6 rounded-lg shadow-lg">

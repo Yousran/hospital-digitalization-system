@@ -1,7 +1,7 @@
 <!-- resources/views/components/card-menu.blade.php -->
 <div class="flex justify-end px-4 pt-4">
     <button id="dropdownButton{{ $dropdownId }}" data-dropdown-toggle="dropdown{{ $dropdownId }}"
-        class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+        class="inline-block text-dark-500 rounded-lg hover:bg-light-500 focus:ring-2 focus:ring-light-700 dark:text-dark-200 dark:hover:bg-dark-500 dark:focus:ring-dark-200 text-sm p-1.5"
         type="button">
         <span class="sr-only">Open dropdown</span>
         <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
