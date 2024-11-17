@@ -93,7 +93,6 @@ Route::middleware(['auth'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
 
-//TODO: Middleware
 //TODO: Rating
 
 //TODO: Consultation bagian medicine card memiliki field input description.
