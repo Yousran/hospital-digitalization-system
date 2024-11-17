@@ -18,35 +18,37 @@ use App\Models\Patient;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('layouts.landing');
-})->name('home');
-
 Route::get('test',function(){
     $biographs = Patient::all();
     $roles = Role::all();
     return view('test', compact('roles'));
 })->name('test');
 
-Route::post('files', [FileController::class, 'store'])->name('files.store');
+Route::middleware(['log'])->group(function () {
+    Route::get('/', function () {
+        return view('layouts.landing');
+    })->name('home');
 
-Route::controller(AuthenticateController::class)->group(function () {
-    Route::get('/login', 'showLoginForm')->name('login');
-    Route::post('/login', 'login');
-    Route::get('/register', 'showRegisterForm')->name('register');
-    Route::post('/register', 'register');
-    Route::get('/logout', 'logout')->name('logout')->middleware('auth');
-    Route::get('/password-reset', function(){
-        return view('pages.password-reset');
-    })->name('password-reset');
-    Route::post('/password-reset', 'sendResetLinkEmail');
+    Route::post('files', [FileController::class, 'store'])->name('files.store');
+
+    Route::controller(AuthenticateController::class)->group(function () {
+        Route::get('/login', 'showLoginForm')->name('login');
+        Route::post('/login', 'login');
+        Route::get('/register', 'showRegisterForm')->name('register');
+        Route::post('/register', 'register');
+        Route::get('/logout', 'logout')->name('logout')->middleware('auth');
+        Route::get('/password-reset', function(){
+            return view('pages.password-reset');
+        })->name('password-reset');
+        Route::post('/password-reset', 'sendResetLinkEmail');
+    });
+
+    Route::controller(UserController::class)->group(function(){
+        Route::get('/user/{username}', 'showProfile')->name('user.profile');
+    });
 });
 
-Route::controller(UserController::class)->group(function(){
-    Route::get('/user/{username}', 'showProfile')->name('user.profile');
-});
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','log'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/chart-medical-records', 'chartMedicalRecords')->name('chartMedicalRecords')->middleware(['role:admin']);
