@@ -100,6 +100,7 @@ Route::middleware(['auth','log'])->group(function () {
 //https://flowbite.com/docs/components/card/#card-with-list
 
 //TODO: Rating
+//TODO: App Tab Icon
 
 //TODO: Consultation bagian medicine card memiliki field input description.
 //TODO: Consultation bagian medicine card bisa di hapus atau undo.
