@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\MedicalRecord;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -98,4 +99,124 @@ class DashboardController extends Controller
         return response()->json($latestPatients);
     }
 
+    public function fetchPatientLatestMedicines()
+    {
+        $user = Auth::user();
+    
+        // Pastikan user adalah pasien
+        $patient = $user->patient;
+    
+        if (!$patient) {
+            return response()->json(['error' => 'Patient not found'], 404);
+        }
+    
+        // Ambil medical record terbaru
+        $latestMedicalRecord = $patient->medicalRecords()->latest()->first();
+    
+        if (!$latestMedicalRecord) {
+            return response()->json(['error' => 'No medical records found'], 404);
+        }
+    
+        // Ambil medicines dari medical record terbaru
+        $medicines = $latestMedicalRecord->medicines()
+            ->with(['medicinePicture']) // Ambil relasi medicinePicture
+            ->withPivot(['quantity', 'description'])
+            ->get()
+            ->map(function ($medicine) {
+                return [
+                    'name' => $medicine->name,
+                    'type' => $medicine->type,
+                    'quantity' => $medicine->pivot->quantity,
+                    'prescription_description' => $medicine->pivot->description,
+                    'medicine_picture' => $medicine->medicinePicture ? asset('/storage/'.$medicine->medicinePicture->path) : 'https://picsum.photos/200',
+                ];
+            });
+    
+        // Format created_at menjadi hanya tanggal
+        $formattedCreatedAt = $latestMedicalRecord->created_at->format('Y-m-d');
+    
+        // Kembalikan data medical record bersama dengan daftar obat-obatan
+        return response()->json([
+            'diagnosis' => $latestMedicalRecord->diagnosis,
+            'created_at' => $formattedCreatedAt,
+            'action' => $latestMedicalRecord->action,
+            'medicines' => $medicines,
+        ]);
+    }
+    
+    public function fetchLatestUnratedMedicalRecord()
+    {
+        $user = Auth::user();
+
+        // Pastikan user adalah pasien
+        $patient = $user->patient;
+
+        if (!$patient) {
+            return response()->json(['error' => 'Patient not found'], 404);
+        }
+
+        // Ambil medical record terbaru yang belum memiliki rate
+        $latestUnratedRecord = $patient->medicalRecords()
+            ->whereDoesntHave('rates')
+            ->latest()
+            ->with(['doctor.user']) // Ambil relasi dengan dokter dan user dokter
+            ->first();
+
+        if (!$latestUnratedRecord) {
+            return response()->json(['error' => 'No unrated medical records found'], 404);
+        }
+
+        return response()->json([
+            'id' => $latestUnratedRecord->id,
+            'diagnosis' => $latestUnratedRecord->diagnosis,
+            'created_at' => $latestUnratedRecord->created_at->format('Y-m-d'),
+            'doctor' => [
+                'name' => $latestUnratedRecord->doctor->biograph->surename,
+                'profile_picture' => $latestUnratedRecord->doctor->user->profilePicture 
+                    ? asset('storage/' . $latestUnratedRecord->doctor->user->profilePicture->path) 
+                    : 'https://picsum.photos/200', // Gambar default
+            ],
+        ]);
+    }
+
+    public function storeRate(Request $request)
+    {
+        $validated = $request->validate([
+            'medical_record_id' => 'required|exists:medical_records,id',
+            'rate' => 'required|integer|min:1|max:5',
+        ]);
+
+        $medicalRecord = MedicalRecord::findOrFail($validated['medical_record_id']);
+
+        // Cek apakah sudah ada rate untuk medical record ini
+        if ($medicalRecord->rates) {
+            return response()->json(['error' => 'Rate already exists for this medical record'], 400);
+        }
+
+        // Tambahkan rate
+        $rate = $medicalRecord->rates()->create([
+            'rate' => $validated['rate'],
+        ]);
+
+        // Ambil dokter dari rekam medis
+        $doctor = $medicalRecord->doctor;
+
+        if ($doctor) {
+            // Hitung rating rata-rata baru untuk dokter
+            $doctorRatings = $doctor->medicalRecords()
+                ->whereHas('rates') // Ambil rekam medis yang memiliki rate
+                ->with('rates')     // Ambil data rate dari setiap rekam medis
+                ->get()
+                ->pluck('rates.rate'); // Ambil nilai rate saja
+
+            $averageRating = round($doctorRatings->average(), 2); // Hitung rata-rata
+
+            // Update rating dokter
+            $doctor->update([
+                'rating' => $averageRating,
+            ]);
+        }
+
+        return response()->json(['message' => 'Rate added successfully', 'rate' => $rate]);
+    }
 }

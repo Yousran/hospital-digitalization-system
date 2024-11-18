@@ -64,6 +64,20 @@
             />
         </x-card>
     @endif
+    
+    <!-- Latest Patients (Doctor Only) -->
+    @if (in_array('pasien', $roles))
+        <x-card mdColSpan="md:col-span-1" xlColSpan="xl:col-span-1">
+            <x-medical-record-card/>
+        </x-card>
+    @endif
+    
+    <!-- Latest Patients (Doctor Only) -->
+    @if (in_array('pasien', $roles))
+        <x-card mdColSpan="md:col-span-1" xlColSpan="xl:col-span-1">
+            <x-rate-medical-record-card/>
+        </x-card>
+    @endif
 
     <!-- Users DataTable (Admin Only) -->
     @if (in_array('admin', $roles))

@@ -8,6 +8,7 @@ class Doctor extends Model
 {
     protected $fillable = [
         'speciality_id',
+        'rating',
         'biograph_id'
     ];
     public function user(){
