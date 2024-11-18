@@ -8,11 +8,17 @@
         <div>
             <label for="email" class="block mb-2 text-sm font-medium text-dark-500 dark:text-light-500">Email User</label>
             <input type="email" name="email" id="email" class="w-full p-2.5 bg-light-500 border border-light-700 text-dark-500 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-300 dark:border-dark-100 dark:placeholder-dark-100 dark:text-light-500 dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="name@company.com" required="">
+            @error('email')
+                <div class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</div>
+            @enderror
         </div>
         <div>
             <label for="password" class="block mb-2 text-sm font-medium text-dark-500 dark:text-light-500">Password</label>
             <input type="password" name="password" id="password" placeholder="••••••••"
                 class="w-full p-2.5 bg-light-500 border border-light-700 text-dark-500 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-dark-300 dark:border-dark-100 dark:placeholder-dark-100 dark:text-light-500 dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+            @error('password')
+                <div class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</div>
+            @enderror
         </div>
         <div class="flex items-center justify-between">
             <div class="flex items-start">
