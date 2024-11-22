@@ -2,64 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Doctor;
 use App\Models\Schedule;
+use App\Models\Speciality;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $specialities = Speciality::with(['doctors' => function($query) {
+            $query->with(['user', 'biograph', 'schedules' => function($q) {
+                $q->orderBy('date', 'asc')
+                 ->orderBy('time', 'asc');
+            }]);
+        }])->get();
+    
+        return view('pages.schedule.index', compact('specialities'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function bookAppointment($id)
     {
-        //
+        $doctor = Doctor::with(['user', 'biograph', 'schedules' => function($q) {
+            $q->orderBy('date', 'asc')
+            ->orderBy('time', 'asc');
+        }])->find($id);
+
+        if (!$doctor) {
+            return redirect()->back();
+        }
+
+        $bookedSlots = [];
+        if (request()->has('date')) {
+            $bookedSlots = Schedule::where('doctor_id', $id)
+                ->where('date', request('date'))
+                ->pluck('time')
+                ->toArray();
+        }
+
+        return view('pages.schedule.book-appointment', compact('doctor', 'bookedSlots'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function checkAvailability($doctor_id, $date)
+    {
+        $bookedSlots = Schedule::where('doctor_id', $doctor_id)
+            ->where('date', $date)
+            ->pluck('time')
+            ->toArray();
+        Log::info($bookedSlots);
+        return response()->json(['bookedSlots' => $bookedSlots]);
+    }
+    
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Schedule $schedule)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Schedule $schedule)
-    {
-        //
+        $validated = $request->validate([
+            'selected_date' => 'required|date',
+            'selected_time' => 'required',
+            'doctor_id' => 'required|exists:doctors,id'
+        ]);
+    
+        Schedule::create([
+            'doctor_id' => $validated['doctor_id'],
+            'patient_id' => Auth::user()->id,
+            'date' => $validated['selected_date'],
+            'time' => $validated['selected_time'],
+            'status' => 'pending'
+        ]);
+    
+        return redirect()->back()
+            ->with('success', 'Appointment booked successfully');
     }
 }

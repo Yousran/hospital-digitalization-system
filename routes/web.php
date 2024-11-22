@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\AuthorizedMedicalRecordController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Middleware\CheckRole;
 use App\Models\Patient;
 use App\Models\Role;
@@ -88,6 +89,13 @@ Route::middleware(['auth','log'])->group(function () {
             Route::post('/add-medicine', 'addMedicine')->name('consultation.addMedicine');
         });
     });
+
+    Route::controller(ScheduleController::class)->group(function () {
+        Route::get('/schedules', 'index')->name('schedules');
+        Route::get('/book-appointment/{id}', 'bookAppointment')->name('schedule.book-appointment');
+        Route::get('/schedule/check-availability/{doctor_id}/{date}', 'checkAvailability')->name('schedule.check-availability');
+        Route::post('/schedule/store', 'store')->name('schedule.store');
+    });
     
     Route::controller(AuthorizedMedicalRecordController::class)->group(function () {
         Route::get('/authorized-medical-records/patient', 'patient')->name('authorized-medical-records.patient');
@@ -104,14 +112,12 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
 
-//TODO: Seeder
-
-//TODO: Schedule
 //TODO: Comment
+//TODO: Admin Dashboard dengan chart gender
+
 //TODO: Alert terima kasih atas rating anda
 
 //TODO: Judul untuk card table
-//TODO: Admin Dashboard dengan chart gender
 
 //TODO: Next schedule card untuk dashboard pasien
 //TODO: Medical record overview untuk dashboard pasien

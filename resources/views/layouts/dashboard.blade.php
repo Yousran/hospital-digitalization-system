@@ -28,7 +28,7 @@
     <section class="mt-[4.5rem] p-4">
         @yield('contents')
     </section>
-    @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>
