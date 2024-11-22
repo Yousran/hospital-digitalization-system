@@ -12,6 +12,7 @@ use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\AuthorizedMedicalRecordController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Middleware\CheckRole;
@@ -53,6 +54,8 @@ Route::middleware(['log'])->group(function () {
     });
     Route::resource('users', UserController::class)->only(['store','update']);
     Route::resource('biographs', BiographController::class)->only(['store','update']);
+    
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
 Route::middleware(['auth','log'])->group(function () {
@@ -113,9 +116,11 @@ Route::middleware(['auth','log'])->group(function () {
 //https://flowbite.com/docs/components/card/#card-with-list
 
 //TODO: Comment
+//TODO: Alert terima kasih atas rating anda
+
+
 //TODO: Admin Dashboard dengan chart gender
 
-//TODO: Alert terima kasih atas rating anda
 
 //TODO: Judul untuk card table
 

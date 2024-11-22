@@ -31,4 +31,9 @@ class MedicalRecord extends Model
                     ->withPivot('quantity', 'description')
                     ->withTimestamps();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
