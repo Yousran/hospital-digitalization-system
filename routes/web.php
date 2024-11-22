@@ -46,10 +46,12 @@ Route::middleware(['log'])->group(function () {
         })->name('password-reset');
         Route::post('/password-reset', 'sendResetLinkEmail');
     });
-
+    
     Route::controller(UserController::class)->group(function(){
         Route::get('/user/{username}', 'showProfile')->name('user.profile');
     });
+    Route::resource('users', UserController::class)->only(['store','update']);
+    Route::resource('biographs', BiographController::class)->only(['store','update']);
 });
 
 Route::middleware(['auth','log'])->group(function () {
@@ -66,13 +68,13 @@ Route::middleware(['auth','log'])->group(function () {
     });
 
     Route::middleware(['role:admin'])->group(function () {
-        Route::resource('users', UserController::class);
+        Route::resource('users', UserController::class)->except(['store','update']);
         Route::resource('patients', PatientController::class);
         Route::resource('doctors', DoctorController::class);
         Route::resource('specialities', SpecialityController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('medical-records', MedicalRecordController::class);
-        Route::resource('biographs', BiographController::class);
+        Route::resource('biographs', BiographController::class)->except(['store','update']);
 
         Route::resource('medicines', MedicineController::class);
         Route::post('/medicines/update-stock', [MedicineController::class, 'updateStock'])->name('medicines.updateStock');
@@ -102,8 +104,14 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
 
+//TODO: Seeder
+
+//TODO: Schedule
+//TODO: Comment
+//TODO: Alert terima kasih atas rating anda
+
 //TODO: Judul untuk card table
-//TODO: Error handling validation di halaman login register
+//TODO: Admin Dashboard dengan chart gender
 
 //TODO: Next schedule card untuk dashboard pasien
 //TODO: Medical record overview untuk dashboard pasien

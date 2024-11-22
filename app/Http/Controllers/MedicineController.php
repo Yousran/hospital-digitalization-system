@@ -73,8 +73,11 @@ class MedicineController extends Controller
             'description' => $validated['description'],
             'type' => $validated['type'],
             'stock' => $validated['stock'],
-            'picture' => $validated['file_id'],
         ]);
+
+        if ($validated['file_id']) {
+            $medicine->update(['picture' => $validated['file_id']]);
+        }
     
         // Redirect ke halaman index setelah sukses memperbarui data medicine
         return redirect()->route('medicines.index')->with('success', 'Medicine updated successfully.');

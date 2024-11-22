@@ -17,19 +17,19 @@ class MedicalRecordSeeder extends Seeder
             'patient_id' => 1,
             'doctor_id' => 1,
             'diagnosis' => 'Keracunan makanan',
-            'action' => 'Berobat',
+            'action' => 'Rawat Jalan',
         ]);
         MedicalRecord::create([
             'patient_id' => 2,
             'doctor_id' => 2,
-            'diagnosis' => 'Pusing',
-            'action' => 'Berobat',
+            'diagnosis' => 'Migrain',
+            'action' => 'Rawat Jalan',
         ]);
         MedicalRecord::create([
             'patient_id' => 2,
             'doctor_id' => 1,
-            'diagnosis' => 'Berak berak',
-            'action' => 'Berobat',
+            'diagnosis' => 'Diare',
+            'action' => 'Rawat Jalan',
         ]);
     }
 }

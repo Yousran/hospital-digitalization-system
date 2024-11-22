@@ -19,7 +19,7 @@
                             <p id="medicine-error" class="text-sm text-red-500 mt-1" style="display: none;"></p>
                         </div>
                         <button type="button" id="add-medicine-button"
-                            class="mt-3 px-4 py-2 bg-primary-700 text-light-500 hover:bg-primary-800 rounded-lg">
+                            class="mt-3 px-4 py-2 bg-primary-500 text-light-500 hover:bg-primary-600 rounded-lg">
                             Add Medicine
                         </button>
                     </div>
