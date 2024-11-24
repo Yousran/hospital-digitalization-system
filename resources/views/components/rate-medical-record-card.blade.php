@@ -25,7 +25,7 @@
 </div>
 
 <!-- Comment Modal -->
-<div id="comment-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="comment-modal" class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="bg-white dark:bg-dark-400 rounded-lg shadow-lg p-6 w-full max-w-md">
         <h2 class="text-lg font-medium text-dark-500 dark:text-light-500 mb-4">Add a Comment</h2>
         <form id="comment-form" class="space-y-4">
@@ -92,6 +92,7 @@
                 .then(data => {
                     if (data?.error) throw new Error(data.error);
                     document.getElementById('comment-modal').classList.remove('hidden');
+                    document.getElementById('comment-modal').classList.add('flex');
                 })
                 .catch(error => console.error(error));
             };
@@ -112,6 +113,7 @@
                     if (data?.error) throw new Error(data.error);
                     form.reset();
                     document.getElementById('comment-modal').classList.add('hidden');
+                    document.getElementById('comment-modal').classList.remove('flex');
                     location.reload();
                 })
                 .catch(error => console.error(error));
