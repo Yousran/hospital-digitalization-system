@@ -1,3 +1,6 @@
+@if ($title)
+    <h2 class="text-lg font-medium text-dark-500 dark:text-light-500 mb-4">{{ $title }}</h2>
+@endif
 <table id="{{ $datatableId }}" class="min-w-full">
     @if ($data)
         
@@ -46,7 +49,6 @@
         @endforeach
     </tbody>
 </table>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 <script>
     if (document.getElementById("{{ $datatableId }}") && typeof simpleDatatables.DataTable !== 'undefined') {
         const dataTable = new simpleDatatables.DataTable("#{{ $datatableId }}", {

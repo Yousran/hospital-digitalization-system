@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Models\MedicalRecord;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -228,5 +229,35 @@ class DashboardController extends Controller
             ->get();
 
         return response()->json($data);
+    }
+
+    public function fetchUpcomingSchedule()
+    {
+        $user = Auth::user();
+
+        // Ensure the user is a patient
+        $patient = $user->patient;
+
+        if (!$patient) {
+            return response()->json(['error' => 'Patient not found'], 404);
+        }
+
+        // Fetch the next upcoming schedule for the patient
+        $upcomingSchedule = Schedule::where('patient_id', $patient->id)
+            ->where('date', '>=', now()->toDateString())
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->first();
+
+        if (!$upcomingSchedule) {
+            return response()->json(['error' => 'No upcoming schedules found'], 404);
+        }
+
+        return response()->json([
+            'doctor_name' => $upcomingSchedule->doctor->user->name,
+            'date' => \Carbon\Carbon::parse($upcomingSchedule->date)->format('Y-m-d'),
+            'time' => \Carbon\Carbon::parse($upcomingSchedule->time)->format('H:i'),
+            'status' => $upcomingSchedule->status,
+        ]);
     }
 }

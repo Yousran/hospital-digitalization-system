@@ -72,6 +72,7 @@ Route::middleware(['auth','log'])->group(function () {
         Route::get('/fetch-patient-latest-medicines', 'fetchPatientLatestMedicines')->name('fetchPatientLatestMedicines')->middleware(['role:pasien']);
         Route::get('/fetch-latest-unrated-medical-record', 'fetchLatestUnratedMedicalRecord')->name('fetchLatestUnratedMedicalRecord')->middleware(['role:pasien']);
         Route::post('/fetch-store-rate', 'storeRate')->name('storeRate')->middleware(['role:pasien']);
+        Route::get('/fetch-upcoming-schedule', 'fetchUpcomingSchedule')->name('fetchUpcomingSchedule')->middleware(['role:pasien']);
     });
 
     Route::middleware(['role:admin'])->group(function () {
@@ -116,11 +117,8 @@ Route::middleware(['auth','log'])->group(function () {
 //https://flowbite.com/blocks/e-commerce/shopping-cart/
 
 //Dashboard 
-//https://flowbite.com/docs/components/card/#card-with-list
+//https://flowbite.com/docs/components/card/#card-with-lis
 
-//TODO: Judul untuk card table
-
-//TODO: Next schedule card untuk dashboard pasien
 //TODO: Medical record overview untuk dashboard pasien
 //TODO: Custom Error page 404 dan seterusnya
 

@@ -14,13 +14,15 @@ class Datatable extends Component
     public string $routeCreate;
     public string $routeEdit;
     public string $routeDelete;
-    public function __construct(Collection $data, string $datatableId, string $routeDelete = '', string $routeEdit = '', string $routeCreate = '')
+    public string $title;
+    public function __construct(Collection $data, string $datatableId, string $routeDelete = '', string $routeEdit = '', string $routeCreate = '', string $title = '')
     {
         $this->data = $data->toArray();
         $this->datatableId = $datatableId;
         $this->routeCreate = $routeCreate;
         $this->routeEdit = $routeEdit;
         $this->routeDelete = $routeDelete;
+        $this->title = $title;
     }
 
     /**

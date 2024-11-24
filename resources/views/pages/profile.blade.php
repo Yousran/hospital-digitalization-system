@@ -262,7 +262,7 @@
             {{-- Medical Record --}}
             @if (Auth::User()->id == $user->id)
                 <x-card mdColSpan="md:col-span-2" xlColSpan="xl:col-span-3">
-                    <x-datatable :data="$medicalRecords" datatableId="datatable"/>
+                    <x-datatable :data="$medicalRecords" datatableId="datatable" title="Your Medical Records"/>
                 </x-card>
             @endif
 

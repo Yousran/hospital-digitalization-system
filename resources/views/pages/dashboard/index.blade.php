@@ -94,10 +94,17 @@
         </x-card>
     @endif
 
+    <!-- Upcoming Schedule (Patient Only) -->
+    @if (in_array('pasien', $roles))
+        <x-card mdColSpan="md:col-span-2" xlColSpan="xl:col-span-3">
+            <x-upcoming-schedule-card/>
+        </x-card>
+    @endif
+
     <!-- Users DataTable (Admin Only) -->
     @if (in_array('admin', $roles))
         <x-card mdColSpan="md:col-span-2" xlColSpan="xl:col-span-3">
-            <x-datatable :data="$users" datatableId="datatable"/>
+            <x-datatable :data="$users" datatableId="datatable" title="Users"/>
         </x-card>
     @endif
 </div>

@@ -25,6 +25,7 @@
 <body class="bg-light-500 dark:bg-dark-500">
     <x-navbar />
     <x-sidebar />
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
     <section class="mt-[4.5rem] p-4">
         @yield('contents')
     </section>

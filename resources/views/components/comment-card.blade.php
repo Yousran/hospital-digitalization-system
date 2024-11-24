@@ -1,4 +1,4 @@
-<div class="bg-light-600 dark:bg-dark-400 border border-light-700 dark:border-dark-300 rounded-lg shadow-lg p-6">
+<div class="bg-light-600 dark:bg-dark-400 border border-light-700 dark:border-dark-300 rounded-lg shadow-lg p-4">
     <h2 class="text-lg font-medium text-dark-500 dark:text-light-500 mb-4">Comments</h2>
     @forelse ($comments as $comment)
         <div class="mb-4">
