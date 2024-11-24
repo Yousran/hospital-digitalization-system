@@ -7,7 +7,7 @@
                 <div class="flex flex-col items-center w-full p-0 m-0 my-4">
 
                     @isset($user->profilPicture->path)
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset('storage/' . $user->profilPicture->path) }}"
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset($user->profilPicture->path) }}"
                     alt="Profile Image" />
                     @else
                     <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://picsum.photos/200" alt="Profile Image" />

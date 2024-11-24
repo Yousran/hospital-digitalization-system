@@ -15,15 +15,15 @@ class MedicineSeeder extends Seeder
     public function run(): void
     {
     $files = [
-        ['name' => 'paracetamol.png', 'path' => 'placeholder/paracetamol.png', 'alt' => 'Paracetamol Image'],
-        ['name' => 'methamphetamine.png', 'path' => 'placeholder/methamphetamine.png', 'alt' => 'Methamphetamine Image'],
-        ['name' => 'medical_syringe.png', 'path' => 'placeholder/medical_syringe.png', 'alt' => 'Medical Syringe Image'],
-        ['name' => 'panadol.png', 'path' => 'placeholder/panadol.png', 'alt' => 'Panadol Image'],
-        ['name' => 'sodium_chlorine.png', 'path' => 'placeholder/sodium_chlorine.png', 'alt' => 'Sodium Chlorine Image'],
-        ['name' => 'intravenous_needle.png', 'path' => 'placeholder/intravenous_needle.png', 'alt' => 'Intravenous Needle Image'],
-        ['name' => 'aspirin.png', 'path' => 'placeholder/aspirin.png', 'alt' => 'Aspirin Image'],
-        ['name' => 'ibuprofen.png', 'path' => 'placeholder/ibuprofen.png', 'alt' => 'Ibuprofen Image'],
-        ['name' => 'amoxicillin.png', 'path' => 'placeholder/amoxicillin.png', 'alt' => 'Amoxicillin Image'],
+        ['name' => 'paracetamol.png', 'path' => 'storage/placeholder/paracetamol.png', 'alt' => 'Paracetamol Image'],
+        ['name' => 'methamphetamine.png', 'path' => 'storage/placeholder/methamphetamine.png', 'alt' => 'Methamphetamine Image'],
+        ['name' => 'medical_syringe.png', 'path' => 'storage/placeholder/medical_syringe.png', 'alt' => 'Medical Syringe Image'],
+        ['name' => 'panadol.png', 'path' => 'storage/placeholder/panadol.png', 'alt' => 'Panadol Image'],
+        ['name' => 'sodium_chlorine.png', 'path' => 'storage/placeholder/sodium_chlorine.png', 'alt' => 'Sodium Chlorine Image'],
+        ['name' => 'intravenous_needle.png', 'path' => 'storage/placeholder/intravenous_needle.png', 'alt' => 'Intravenous Needle Image'],
+        ['name' => 'aspirin.png', 'path' => 'storage/placeholder/aspirin.png', 'alt' => 'Aspirin Image'],
+        ['name' => 'ibuprofen.png', 'path' => 'storage/placeholder/ibuprofen.png', 'alt' => 'Ibuprofen Image'],
+        ['name' => 'amoxicillin.png', 'path' => 'storage/placeholder/amoxicillin.png', 'alt' => 'Amoxicillin Image'],
     ];
 
     foreach ($files as $file) {

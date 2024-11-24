@@ -28,7 +28,7 @@
                 data-dropdown-placement="bottom">
                 @auth
                     @if (isset(Auth::user()->profilPicture->path))
-                        <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . Auth::user()->profilPicture->path) }}" alt="user photo">
+                        <img class="w-8 h-8 rounded-full" src="{{ asset(Auth::user()->profilPicture->path) }}" alt="user photo">
                     @else
                         <img class="w-8 h-8 rounded-full" src="https://picsum.photos/200" alt="user photo">
                     @endif

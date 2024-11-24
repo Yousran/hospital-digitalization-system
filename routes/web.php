@@ -43,6 +43,10 @@ Route::middleware(['log'])->group(function () {
         Route::get('/register', 'showRegisterForm')->name('register');
         Route::post('/register', 'register');
         Route::get('/logout', 'logout')->name('logout')->middleware('auth');
+
+        Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+        Route::get('auth/google/callback', 'handleGoogleCallback');
+
         Route::get('/password-reset', function(){
             return view('pages.password-reset');
         })->name('password-reset');
@@ -121,7 +125,7 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-lis
 
-//TODO: Google login
+//TODO: Biographs
 
 //TODO: Medical record overview untuk dashboard pasien
 //TODO: Alert view connect dengan controller 

@@ -21,7 +21,7 @@
                                 <div class="flex items-center space-x-4">
                                     <!-- Doctor Avatar -->
                                         @if (isset($doctor->user->profilPicture->path))
-                                            <img class="w-16 h-16 rounded-full" src="{{ asset('storage/' . $doctor->user->profilPicture->path) }}" alt="user photo">
+                                            <img class="w-16 h-16 rounded-full" src="{{ asset($doctor->user->profilPicture->path) }}" alt="user photo">
                                         @else
                                             <img class="w-16 h-16 rounded-full" src="https://picsum.photos/200" alt="user photo">
                                         @endif                                    

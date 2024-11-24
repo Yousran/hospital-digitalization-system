@@ -14,7 +14,7 @@
             @foreach ($medicines as $medicine)
                     <div class="w-full h-full border rounded-lg shadow bg-light-600 border-light-700 dark:bg-dark-400 dark:border-dark-300">
                         @isset($medicine->medicinePicture->path)
-                                <img class="rounded-t-lg object-cover h-80 w-full" src="{{ asset('storage/' . $medicine->medicinePicture->path) }}"
+                                <img class="rounded-t-lg object-cover h-80 w-full" src="{{ asset($medicine->medicinePicture->path) }}"
                                 alt="{{ $medicine->medicinePicture->name }}" />
                                 
                         @else

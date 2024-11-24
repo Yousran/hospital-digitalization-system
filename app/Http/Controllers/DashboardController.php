@@ -174,7 +174,7 @@ class DashboardController extends Controller
             'doctor' => [
                 'name' => $latestUnratedRecord->doctor->biograph->surename,
                 'profile_picture' => $latestUnratedRecord->doctor->user->profilePicture 
-                    ? asset('storage/' . $latestUnratedRecord->doctor->user->profilePicture->path) 
+                    ? asset($latestUnratedRecord->doctor->user->profilePicture->path) 
                     : 'https://picsum.photos/200', // Gambar default
             ],
         ]);

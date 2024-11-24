@@ -19,7 +19,7 @@ class FileController extends Controller
             $file = $request->file('file');
             
             // Store the file in the 'uploads' directory of the public disk
-            $path = $file->store('uploads', 'public');
+            $path = 'storage/'.$file->store('uploads', 'public');
             
             // Create a new record in the files table
             $fileRecord = File::create([

@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Biograph;
+use App\Models\File;
 use App\Models\Patient;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticateController extends Controller
 {
@@ -94,6 +97,58 @@ class AuthenticateController extends Controller
 
         // Redirect ke halaman utama setelah logout
         return redirect()->route('home')->with('message', 'Logged out successfully');
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+            $user = User::where('email', $googleUser->getEmail())->first();
+
+            if ($user) {
+                Auth::login($user);
+                return redirect()->route('dashboard');
+            } else {
+                $user = User::create([
+                    'name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'password' => Hash::make(uniqid()),
+                    'picture' => File::create([
+                    'name' => $googleUser->getName(),
+                    'path' => $googleUser->getAvatar(),
+                ])->id,
+                ]);
+
+                $roles = UserRole::create([
+                    'user_id' => $user->id,
+                    'role_id' => 3,
+                ]);        
+
+                // Create a biograph for the user
+                $biograph = Biograph::create([
+                    'user_id' => $user->id,
+                ]);
+                Log::info($biograph);
+
+                // Create a patient record for the user
+                $patient = Patient::create([
+                    'user_id' => $user->id,
+                    'biograph_id' => $biograph->id,
+                ]);
+
+                Auth::login($user);
+                return redirect()->route('user.profile',$user->name);
+            }
+
+            
+        } catch (\Exception $e) {
+            return redirect()->route('login')->withErrors(['error' => 'Failed to login with Google.']);
+        }
     }
 
     // Fungsi untuk mengirim link reset password bisa diaktifkan jika diperlukan

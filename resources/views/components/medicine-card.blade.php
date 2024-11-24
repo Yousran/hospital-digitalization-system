@@ -2,7 +2,7 @@
     <div class="col-span-1 p-4">
         @isset($medicine->medicinePicture)
             <img class="w-full object-cover rounded-lg" 
-            src="{{ asset('storage/' . $medicine->medicinePicture->path) }}" 
+            src="{{ asset($medicine->medicinePicture->path) }}" 
             alt="{{ $medicine->medicinePicture->name }}">
         @else    
             <img class="h-auto w-full object-cover rounded-lg" src="https://picsum.photos/100" alt="Placeholder">

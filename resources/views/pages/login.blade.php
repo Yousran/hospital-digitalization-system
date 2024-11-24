@@ -35,7 +35,7 @@
         </div>
         <button type="submit"
             class="w-full text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800">Login</button>
-        <button type="button"
+        <a href="{{ route('auth.google') }}"
             class="w-full flex items-center justify-center 
             text-dark-300 bg-white border border-gray-300 hover:bg-gray-100 
             focus:ring-4 focus:outline-none 
@@ -44,7 +44,7 @@
             dark:hover:bg-dark-200 dark:focus:ring-gray-700">
             <i class="bx bxl-google w-5 h-5 text-2xl me-4"></i>
             Login with Google
-        </button>
+        </a>
         <p class="text-sm font-light text-dark-300 dark:text-light-600">
             Don't have an account yet? <a href="{{ route('register') }}"
                 class="font-medium text-primary-500 hover:underline dark:text-light-500">Register</a>
