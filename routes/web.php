@@ -121,6 +121,8 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-lis
 
-//TODO: Bagian edit doctor dan patient untuk admin, bisa menambahkan relasi dengan user
+//TODO: Google login
+
 //TODO: Medical record overview untuk dashboard pasien
+//TODO: Alert view connect dengan controller 
 //TODO: Custom Error page 404 dan seterusnya

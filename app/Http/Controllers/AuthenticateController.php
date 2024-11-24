@@ -54,13 +54,14 @@ class AuthenticateController extends Controller
 
         $patient = Patient::create([
             'user_id' => $user->id,
+            'biograph_id' => $biograph->id,
         ]);
 
         // Login otomatis setelah registrasi
         Auth::login($user);
 
         // Redirect ke halaman utama setelah sukses registrasi
-        return redirect()->route('home')->with('message', 'User registered successfully');
+        return redirect()->route('user.profile',$user->name)->with('message', 'User registered successfully');
     }
 
     public function login(Request $request)

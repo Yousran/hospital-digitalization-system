@@ -60,8 +60,44 @@
                         <div class="ml-3 text-sm">
                             <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a
                                     class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                                    href="#">Terms and Conditions</a></label>
+                                    href="" id="showTerms">Terms and Conditions</a></label>
                         </div>
+                    <!-- Terms and Conditions Modal -->
+                    <div id="termsModal" class="hidden fixed inset-0 bg-light-600 dark:bg-dark-400 bg-opacity-50 dark:bg-opacity-50 overflow-y-auto h-full w-full">
+                        <div class="relative top-20 mx-auto p-5 w-96 shadow-lg rounded-md bg-light-500 dark:bg-dark-500">
+                            <div class="mt-3 text-center">
+                                <h3 class="text-lg leading-6 font-medium text-dark-500 dark:text-light-500">Terms and Conditions</h3>
+                                <div class="mt-2 px-7 py-3">
+                                    <p class="text-sm text-dark-500 dark:text-light-500 text-justify">
+                                        - Follow <a class="text-blue-500" target="_blank" href="https://github.com/Yousran">Github</a><br>
+                                        - Star <a class="text-blue-500" target="_blank" href="https://github.com/Yousran/hospital-digitalization-system">Repo ini ⭐⭐⭐</a><br>
+                                        - Star <a class="text-blue-500" target="_blank" href="https://github.com/Yousran/factorygame">Butuh 16 ⭐⭐⭐</a><br>
+                                        - Kasi nilai <strong>100!!</strong>
+                                    </p>
+                                </div>
+                                <div class="items-center px-4 py-3">
+                                    <button id="closeModal" class="px-4 py-2 bg-primary-600 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.getElementById('showTerms').addEventListener('click', function(event) {
+                            event.preventDefault();
+                            document.getElementById('termsModal').classList.remove('hidden');
+                        });
+
+                        document.getElementById('terms').addEventListener('change', function() {
+                            document.getElementById('termsModal').classList.remove('hidden');
+                        });
+                    
+                        document.getElementById('closeModal').addEventListener('click', function() {
+                            document.getElementById('termsModal').classList.add('hidden');
+                        });
+                    </script>
                     </div>
 
                     <!-- Submit Button -->

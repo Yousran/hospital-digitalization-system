@@ -89,13 +89,32 @@ class BiographController extends Controller
             'doctor_id' => 'nullable|integer',
             'speciality_id' => 'nullable|integer',
             'patient_id' => 'nullable|integer',
-            'relatives' => 'nullable|string', // Assuming 'relatives' is an ID of another user
+            'relatives' => 'nullable|string',
+            'name' => 'nullable|string|exists:users,name',
         ]);
+
+        // Check if the username is already linked to another doctor
+        if (!empty($validated['name'])) {
+            $user = User::where('name', $validated['name'])->first();
+            if ($user && Doctor::where('user_id', $user->id)->exists()) {
+                return redirect()->back()->withErrors(['name' => 'This username is already linked to another doctor.']);
+            }
+        }
+
+        if (!empty($validated['name'])) {
+            $user = User::where('name', $validated['name'])->first();
+            if ($user && Patient::where('user_id', $user->id)->exists()) {
+                return redirect()->back()->withErrors(['name' => 'This username is already linked to another patient.']);
+            }
+        }
 
         // Update speciality if speciality_id is provided
         if (!empty($validated['speciality_id']) && !empty($validated['doctor_id'])) {
             $doctor = Doctor::findOrFail($validated['doctor_id']);
-            $doctor->update(['speciality_id' => $validated['speciality_id']]);
+            $doctor->update([
+                'speciality_id' => $validated['speciality_id'],
+                'user_id' => $user->id ?? null,
+            ]);
         }
 
         // Update patient relatives if patient_id and relatives are provided
@@ -106,7 +125,10 @@ class BiographController extends Controller
             $relatives = User::where('name', $validated['relatives'])->first();  // Use `first()` to get the actual user
             
             if ($relatives) {
-                $patient->update(['relatives' => $relatives->id]);
+                $patient->update([
+                    'relatives' => $relatives->id,
+                    'user_id' => $user->id ?? null
+                ]);
             } else {
                 // Handle the case when no relative is found (optional)
                 return redirect()->back()->withErrors(['relatives' => 'Relative not found']);
@@ -127,6 +149,7 @@ class BiographController extends Controller
             'marriage_status' => $request->input('marriage_status'),
             'job' => $request->input('job'),
             'file_id' => $request->input('file_id'),
+            'user_id' => $user->id ?? null,
         ]);
 
         // Redirect back with a success message

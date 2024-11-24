@@ -43,7 +43,7 @@
                     mudah, aman, dan nyaman.</p>
                 <a href="
                 @auth
-                    {{ route('authorized-medical-records.patient') }}
+                    {{ route('schedules') }}
                 @else
                     {{ route('login') }}
                 @endauth"
