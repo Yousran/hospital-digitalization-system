@@ -9,43 +9,69 @@
         @endif
     </div>
     @endif
-    <div id="chart-{{ $id ?? 'default' }}" style="height: 300px;"></div>
+    <div id="chart-{{ $chartId ?? 'default' }}" class="min-h-[300px] max-h-[350px]"></div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const fetchUrl = "{{ $fetchUrl }}";
-        const chartElement = document.getElementById("chart-{{ $id ?? 'default' }}");
+        const chartElement = document.getElementById("chart-{{ $chartId ?? 'default' }}");
 
         if (chartElement && typeof ApexCharts !== "undefined") {
             fetch(fetchUrl)
                 .then(response => response.json())
                 .then(data => {
-                    const categories = data.map(item => item.date);
-                    const seriesData = data.map(item => item.total); // Sesuaikan dengan format data
+                    let options;
+                    if ("{{ $chartType }}" === "donut") {
+                        const labels = data.map(item => item.gender); // Assuming your data has a 'gender' field
+                        const seriesData = data.map(item => item.total); // Assuming your data has a 'total' field
 
-                    const options = {
-                        chart: {
-                            type: "{{ $chartType }}",
-                            height: "100%",
-                            fontFamily: "Inter, sans-serif",
-                            toolbar: { show: false },
-                        },
-                        series: [
-                            {
-                                name: "{{ $seriesName }}",
-                                data: seriesData,
-                                color: "{{ $color }}",
+                        options = {
+                            chart: {
+                                type: "donut",
+                                height: "100%",
+                                fontFamily: "Inter, sans-serif",
+                                toolbar: { show: false },
                             },
-                        ],
-                        xaxis: { categories: categories },
-                        yaxis: { labels: { show: true } },
-                        tooltip: { enabled: true },
-                        stroke: { curve: "smooth", width: 3 },
-                        grid: { show: false },
-                        fill: { type: "gradient" },
-                    };
+                            series: seriesData,
+                            labels: labels,
+                            tooltip: { enabled: true },
+                            stroke: { show: false },
+                            legend: { position: 'bottom' },
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        size: '65%'
+                                    }
+                                }
+                            },
+                            dataLabels: { enabled: true },
+                        };
+                    } else {
+                        const categories = data.map(item => item.date);
+                        const seriesData = data.map(item => item.total); // Adjust according to your data format
+
+                        options = {
+                            chart: {
+                                type: "{{ $chartType }}",
+                                height: "100%",
+                                fontFamily: "Inter, sans-serif",
+                                toolbar: { show: false },
+                            },
+                            series: [
+                                {
+                                    name: "{{ $seriesName }}",
+                                    data: seriesData,
+                                    color: "{{ $color }}",
+                                },
+                            ],
+                            xaxis: { categories: categories },
+                            yaxis: { labels: { show: true } },
+                            tooltip: { enabled: true },
+                            stroke: { curve: "smooth", width: 3 },
+                            grid: { show: false },
+                            fill: { type: "gradient" },
+                        };
+                    }
 
                     const chart = new ApexCharts(chartElement, options);
                     chart.render();

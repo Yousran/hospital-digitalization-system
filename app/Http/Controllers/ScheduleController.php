@@ -14,12 +14,11 @@ class ScheduleController extends Controller
     public function index()
     {
         $specialities = Speciality::with(['doctors' => function($query) {
-            $query->with(['user', 'biograph', 'schedules' => function($q) {
-                $q->orderBy('date', 'asc')
-                 ->orderBy('time', 'asc');
+            $query->with(['user.profilPicture', 'biograph', 'schedules' => function($q) {
+            $q->orderBy('date', 'asc')
+             ->orderBy('time', 'asc');
             }]);
         }])->get();
-    
         return view('pages.schedule.index', compact('specialities'));
     }
 

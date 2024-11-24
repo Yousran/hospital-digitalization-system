@@ -150,7 +150,7 @@ class UserController extends Controller
 
     public function showProfile($username)
     {
-        $user = User::with(['roles', 'doctor', 'profilPicture', 'patient', 'biograph'])->where('name', $username)->firstOrFail();
+        $user = User::with(['roles', 'doctor.biograph', 'profilPicture', 'patient', 'biograph'])->where('name', $username)->firstOrFail();
 
         $medicalRecords = MedicalRecord::with([
             'patient.biograph:id,nik,surename',
@@ -162,14 +162,15 @@ class UserController extends Controller
         ->get()
         ->map(function ($record) {
             return [
-                // 'id' => $record->id,
                 'tanggal' => $record->created_at ?? '-',
                 'diagnosis' => $record->diagnosis ?? '-', 
                 'action' => $record->action ?? '-',
             ];
         });
         $medicalRecords = new \Illuminate\Database\Eloquent\Collection($medicalRecords);
-        // return dd($user->profilPicture->path);
-        return view('pages.profile', compact(['user','medicalRecords']));
+
+        $doctor = $user->doctor;
+
+        return view('pages.profile', compact(['user', 'medicalRecords', 'doctor']));
     }
 }

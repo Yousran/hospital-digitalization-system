@@ -31,4 +31,9 @@ class Doctor extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function comments()
+    {
+        return $this->hasManyThrough(Comment::class, MedicalRecord::class, 'doctor_id', 'medical_record_id');
+    }
 }

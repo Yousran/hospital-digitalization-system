@@ -219,4 +219,14 @@ class DashboardController extends Controller
 
         return response()->json(['message' => 'Rate added successfully', 'rate' => $rate]);
     }
+
+    public function chartUserGender()
+    {
+        $data = DB::table('biographs')
+            ->select('gender', DB::raw('COUNT(*) as total'))
+            ->groupBy('gender')
+            ->get();
+
+        return response()->json($data);
+    }
 }

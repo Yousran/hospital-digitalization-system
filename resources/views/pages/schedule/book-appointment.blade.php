@@ -61,6 +61,10 @@
                                 @endforeach
                             </ul>
                         </div>
+                        <div class="sm:ms-7 sm:ps-5 flex flex-col mt-5 sm:mt-0">
+                            <h5 class="text-xl font-semibold text-dark-500 dark:text-light-500">{{ $doctor->user->name }}</h5>
+                            <h5 class="text-xl font-semibold text-dark-500 dark:text-light-500">{{ $doctor->biograph->surename }}</h5>
+                        </div>
                     </div>
 
                     <div class="flex justify-between mt-6">

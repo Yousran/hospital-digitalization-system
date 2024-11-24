@@ -20,10 +20,11 @@
                             <div class="flex flex-col rounded-lg border border-light-700 bg-light-500 shadow-sm dark:border-dark-300 dark:bg-dark-400 p-4">
                                 <div class="flex items-center space-x-4">
                                     <!-- Doctor Avatar -->
-                                    <div class="h-16 w-16 rounded-full bg-light-600 dark:bg-dark-300 flex items-center justify-center">
-                                        <i class='bx bx-user text-3xl text-primary-500'></i>
-                                    </div>
-                                    
+                                        @if (isset($doctor->user->profilPicture->path))
+                                            <img class="w-16 h-16 rounded-full" src="{{ asset('storage/' . $doctor->user->profilPicture->path) }}" alt="user photo">
+                                        @else
+                                            <img class="w-16 h-16 rounded-full" src="https://picsum.photos/200" alt="user photo">
+                                        @endif                                    
                                     <!-- Doctor Info -->
                                     <div>
                                         <h3 class="font-medium text-dark-500 dark:text-light-500">

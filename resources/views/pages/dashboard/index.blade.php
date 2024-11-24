@@ -23,11 +23,26 @@
     @if (in_array('admin', $roles))
         <x-card mdColSpan="md:col-span-1" xlColSpan="xl:col-span-1">
             <x-chart 
+                chart-id="medical-records-chart"
                 title="Medical Records"
                 fetch-url="{{ route('chartMedicalRecords') }}" 
                 series-name="Medical Records" 
                 color="#5d80ab" 
                 chart-type="area" 
+            />
+        </x-card>
+    @endif
+    
+    <!-- User Gender Donut Chart (Visible for Admin and Doctor) -->
+    @if (in_array('admin', $roles))
+        <x-card mdColSpan="md:col-span-1" xlColSpan="xl:col-span-1">
+            <x-chart 
+                chart-id="user-gender-chart"
+                title="Patients Gender"
+                fetch-url="{{ route('chartUserGender') }}" 
+                series-name="Patients Gender" 
+                color="#5d80ab" 
+                chart-type="donut" 
             />
         </x-card>
     @endif
@@ -87,3 +102,7 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+@endpush

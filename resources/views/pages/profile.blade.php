@@ -272,5 +272,10 @@
                     
                 </x-profile-card>
             </div> --}}
+            @if ($user->doctor)
+            <div class="col-span-1 sm:col-span-1">
+                <x-comment-card :doctorId="$doctor->id" />
+            </div>
+            @endif
         </div>
 @endsection

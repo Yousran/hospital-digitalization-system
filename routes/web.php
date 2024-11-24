@@ -61,7 +61,10 @@ Route::middleware(['log'])->group(function () {
 Route::middleware(['auth','log'])->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
+        
         Route::get('/chart-medical-records', 'chartMedicalRecords')->name('chartMedicalRecords')->middleware(['role:admin']);
+        Route::get('/chart-user-gender', 'chartUserGender')->name('chartUserGender')->middleware(['role:admin']);
+        
         Route::get('/fetch-active-users', 'fetchActiveUsers')->name('fetchActiveUsers')->middleware(['role:admin']);
         Route::get('/fetch-active-doctors', 'fetchActiveDoctors')->name('fetchActiveDoctors')->middleware(['role:admin,dokter']);
         Route::get('/fetch-active-patients', 'fetchActivePatients')->name('fetchActivePatients')->middleware(['role:admin']);
@@ -115,18 +118,12 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-list
 
-//TODO: Comment
-//TODO: Alert terima kasih atas rating anda
-
-
-//TODO: Admin Dashboard dengan chart gender
-
-
 //TODO: Judul untuk card table
 
 //TODO: Next schedule card untuk dashboard pasien
 //TODO: Medical record overview untuk dashboard pasien
 //TODO: Custom Error page 404 dan seterusnya
+
 //TODO: Consultation bagian medicine card memiliki field input description.
 //TODO: Consultation bagian medicine card bisa di hapus atau undo.
 //TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database
