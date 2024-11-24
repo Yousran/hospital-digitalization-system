@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
@@ -30,14 +29,12 @@ class ConsultationController extends Controller
             return response()->json(['error' => 'Medicine not found'], 404);
         }
     
-    
         // Render komponen medicine-card
         $html = view('components.medicine-card', compact('medicine'))->render();
     
         // Kembalikan HTML sebagai respon
         return response($html);
     }
-
 
     public function store(Request $request)
     {
@@ -49,6 +46,8 @@ class ConsultationController extends Controller
             'medicines.*' => 'exists:medicines,id',  // Check if each medicine_id exists in the medicines table
             'quantity' => 'nullable|array',
             'quantity.*' => 'integer|min:1',
+            'description' => 'nullable|array',
+            'description.*' => 'string|nullable',
         ]);
 
         $patient = Patient::whereHas('biograph', function ($query) use ($validated) {
@@ -68,6 +67,7 @@ class ConsultationController extends Controller
         // Step 3: Process medicines and quantities for recipe entries if medicines are provided
         $medicines = $validated['medicines'] ?? [];
         $quantities = $validated['quantity'] ?? [];
+        $descriptions = $validated['description'] ?? [];
 
         if (!empty($medicines)) {
             foreach ($medicines as $index => $medicineId) {
@@ -75,12 +75,17 @@ class ConsultationController extends Controller
                     'medicine_id' => $medicineId,
                     'medical_record_id' => $medicalRecord->id,
                     'quantity' => $quantities[$index] ?? 1,
-                    'description' => 'Enter a default or specific description', // Adjust as necessary
+                    'description' => $descriptions[$index] ?? 'Enter a default or specific description', // Adjust as necessary
                 ]);
             }
         }
         return redirect()->route('consultation')->with('success', 'Consultation record saved successfully.');
     }
 
-
+    public function getSuggestions(Request $request)
+    {
+        $query = $request->get('query', '');
+        $medicines = Medicine::where('name', 'LIKE', "%{$query}%")->pluck('name');
+        return response()->json($medicines);
+    }
 }

@@ -93,6 +93,7 @@ Route::middleware(['auth','log'])->group(function () {
         Route::controller(ConsultationController::class)->group(function () {
             Route::get('/consultation', 'index')->name('consultation');
             Route::post('/consultation', 'store')->name('consultation.store');
+            Route::get('/medicine-suggestions', 'getSuggestions')->name('medicine.suggestions');
             Route::post('/add-medicine', 'addMedicine')->name('consultation.addMedicine');
         });
     });
@@ -119,11 +120,8 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-lis
 
-
-//TODO: fitur pencarian medicine untuk consultation
-//TODO: Consultation bagian medicine card memiliki field input description.
-//TODO: Consultation bagian medicine card bisa di hapus atau undo.
-//TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database
+//TODO: fix upcoming schedule di dashboard pasien tidak ada setelah logout
+//TODO: tidak menampilkan biograph jika bukan user yang bersangkutan
 
 //TODO: Bagian edit doctor dan patient untuk admin, bisa menambahkan relasi dengan user
 //TODO: Medical record overview untuk dashboard pasien

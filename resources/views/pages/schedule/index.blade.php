@@ -28,7 +28,7 @@
                                     <!-- Doctor Info -->
                                     <div>
                                         <h3 class="font-medium text-dark-500 dark:text-light-500">
-                                            {{ optional($doctor->user)->name ?? optional($doctor->biograph)->surename ?? 'No Name' }}
+                                            {{ optional($doctor->biograph)->surename ?? 'No Name' }}
                                         </h3>
                                         <p class="text-sm text-dark-100">
                                             {{ optional($doctor->speciality)->name ?? 'No Speciality' }}
