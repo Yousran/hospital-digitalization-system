@@ -3,6 +3,11 @@
 
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+    <style>
+        .fc-event-title, .fc-event-time {
+            white-space: normal !important;
+        }
+    </style>
 @endpush
 
 @push('scripts')
@@ -21,11 +26,11 @@
                             if (data.error) {
                                 failureCallback(data.error);
                             } else {
-                                const events = [{
-                                    title: `Doctor: ${data.doctor_name}`,
-                                    start: `${data.date}T${data.time}`,
-                                    description: `Status: ${data.status}`
-                                }];
+                                const events = data.map(schedule => ({
+                                    title: `${schedule.doctor_name}`,
+                                    start: `${schedule.date}T${schedule.time}`,
+                                    description: `Status: ${schedule.status}`
+                                }));
                                 successCallback(events);
                             }
                         })
@@ -34,6 +39,19 @@
                             failureCallback("Error loading schedule.");
                         });
                 },
+                eventContent: function(arg) {
+                    let time = document.createElement('div');
+                    time.classList.add('fc-event-time');
+                    time.innerHTML = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    let doctorName = document.createElement('div');
+                    doctorName.classList.add('fc-event-title');
+                    doctorName.innerHTML = arg.event.title;
+
+                    let arrayOfDomNodes = [ time, doctorName ];
+
+                    return { domNodes: arrayOfDomNodes };
+                }
             });
 
             calendar.render();

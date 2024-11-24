@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Biograph;
+use App\Models\Patient;
 use App\Models\User;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
@@ -44,6 +46,14 @@ class AuthenticateController extends Controller
         $roles = UserRole::create([
             'user_id' => $user->id,
             'role_id' => 3,
+        ]);
+
+        $biograph = Biograph::create([
+            'user_id' => $user->id,
+        ]);
+
+        $patient = Patient::create([
+            'user_id' => $user->id,
         ]);
 
         // Login otomatis setelah registrasi

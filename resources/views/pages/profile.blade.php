@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <!-- Card 1 -->
             <x-profile-card>
-                <div class="flex flex-col items-center w-full p-0 m-0 mt-4">
+                <div class="flex flex-col items-center w-full p-0 m-0 my-4">
 
                     @isset($user->profilPicture->path)
                     <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ asset('storage/' . $user->profilPicture->path) }}"
@@ -23,7 +23,7 @@
                         @endforeach
                     </div>
                     @if ($user->doctor)
-                    <div class="p-4 flex flex-col justify-start w-full">
+                    <div class="p-4 pb-0 flex flex-col justify-start w-full">
                         <h5 class="text-md font-medium text-dark-500 dark:text-light-500">Dokter Spesialis</h5>
                         <p class="text-dark-100 dark:text-light-900">
                             {{ $user->doctor->speciality->name }}
@@ -104,7 +104,7 @@
             </x-slot>
             @endif
         </x-profile-card>
-        
+        @if ((Auth::User()->id == $user->id) || (!Auth::User()->roles->contains('name', 'pasien')))
             <!-- Card 2 (Melebihi 1 Kolom) -->
             <div class="col-span-1 sm:col-span-2">
                 <x-profile-card>
@@ -258,6 +258,7 @@
                     @endif
                 </x-profile-card>
             </div>
+        @endif
 
             {{-- Medical Record --}}
             @if (Auth::User()->id == $user->id)

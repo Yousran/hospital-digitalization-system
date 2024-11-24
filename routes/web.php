@@ -49,9 +49,6 @@ Route::middleware(['log'])->group(function () {
         Route::post('/password-reset', 'sendResetLinkEmail');
     });
     
-    Route::controller(UserController::class)->group(function(){
-        Route::get('/user/{username}', 'showProfile')->name('user.profile');
-    });
     Route::resource('users', UserController::class)->only(['store','update']);
     Route::resource('biographs', BiographController::class)->only(['store','update']);
     
@@ -89,6 +86,10 @@ Route::middleware(['auth','log'])->group(function () {
         
     });
 
+    Route::controller(UserController::class)->group(function(){
+        Route::get('/user/{username}', 'showProfile')->name('user.profile');
+    });
+
     Route::middleware(['role:dokter'])->group(function () {
         Route::controller(ConsultationController::class)->group(function () {
             Route::get('/consultation', 'index')->name('consultation');
@@ -119,9 +120,6 @@ Route::middleware(['auth','log'])->group(function () {
 
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-lis
-
-//TODO: fix upcoming schedule di dashboard pasien tidak ada setelah logout
-//TODO: tidak menampilkan biograph jika bukan user yang bersangkutan
 
 //TODO: Bagian edit doctor dan patient untuk admin, bisa menambahkan relasi dengan user
 //TODO: Medical record overview untuk dashboard pasien

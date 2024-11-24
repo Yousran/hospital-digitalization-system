@@ -64,7 +64,7 @@ class ScheduleController extends Controller
     
         Schedule::create([
             'doctor_id' => $validated['doctor_id'],
-            'patient_id' => Auth::user()->id,
+            'patient_id' => Auth::user()->patient->id,
             'date' => $validated['selected_date'],
             'time' => $validated['selected_time'],
             'status' => 'pending'

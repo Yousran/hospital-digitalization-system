@@ -13,7 +13,6 @@
 </div>
 
 @push('scripts')
-    
     <script>
         function initDropzone(id) {
             const dropzoneArea = document.getElementById(`dropzone-area-${id}`);

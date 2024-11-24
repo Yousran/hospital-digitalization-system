@@ -224,7 +224,7 @@ class DashboardController extends Controller
     public function chartUserGender()
     {
         $data = DB::table('biographs')
-            ->select('gender', DB::raw('COUNT(*) as total'))
+            ->select(DB::raw('COALESCE(gender, "Not Specified") as gender'), DB::raw('COUNT(*) as total'))
             ->groupBy('gender')
             ->get();
 
@@ -235,29 +235,62 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Ensure the user is a patient
+        // Check if the user is a doctor
+        $doctor = $user->doctor;
+
+        if ($doctor) {
+            // Fetch all upcoming schedules for the doctor
+            $upcomingSchedules = Schedule::where('doctor_id', $doctor->id)
+                ->where('date', '>=', now()->toDateString())
+                ->orderBy('date', 'asc')
+                ->orderBy('time', 'asc')
+                ->with(['patient.user']) // Include the patient user relation
+                ->get();
+
+            if ($upcomingSchedules->isEmpty()) {
+                return response()->json(['error' => 'No upcoming schedules found'], 404);
+            }
+
+            $schedules = $upcomingSchedules->map(function ($schedule) {
+                return [
+                    'doctor_name' => $schedule->patient->user->name,
+                    'date' => \Carbon\Carbon::parse($schedule->date)->format('Y-m-d'),
+                    'time' => \Carbon\Carbon::parse($schedule->time)->format('H:i'),
+                    'status' => $schedule->status,
+                ];
+            });
+
+            return response()->json($schedules);
+        }
+
+        // Check if the user is a patient
         $patient = $user->patient;
 
-        if (!$patient) {
-            return response()->json(['error' => 'Patient not found'], 404);
+        if ($patient) {
+            // Fetch all upcoming schedules for the patient
+            $upcomingSchedules = Schedule::where('patient_id', $patient->id)
+                ->where('date', '>=', now()->toDateString())
+                ->orderBy('date', 'asc')
+                ->orderBy('time', 'asc')
+                ->with(['doctor.biograph']) // Include the biograph relation
+                ->get();
+
+            if ($upcomingSchedules->isEmpty()) {
+                return response()->json(['error' => 'No upcoming schedules found'], 404);
+            }
+
+            $schedules = $upcomingSchedules->map(function ($schedule) {
+                return [
+                    'doctor_name' => $schedule->doctor->biograph->surename,
+                    'date' => \Carbon\Carbon::parse($schedule->date)->format('Y-m-d'),
+                    'time' => \Carbon\Carbon::parse($schedule->time)->format('H:i'),
+                    'status' => $schedule->status,
+                ];
+            });
+
+            return response()->json($schedules);
         }
 
-        // Fetch the next upcoming schedule for the patient
-        $upcomingSchedule = Schedule::where('patient_id', $patient->id)
-            ->where('date', '>=', now()->toDateString())
-            ->orderBy('date', 'asc')
-            ->orderBy('time', 'asc')
-            ->first();
-
-        if (!$upcomingSchedule) {
-            return response()->json(['error' => 'No upcoming schedules found'], 404);
-        }
-
-        return response()->json([
-            'doctor_name' => $upcomingSchedule->doctor->user->name,
-            'date' => \Carbon\Carbon::parse($upcomingSchedule->date)->format('Y-m-d'),
-            'time' => \Carbon\Carbon::parse($upcomingSchedule->time)->format('H:i'),
-            'status' => $upcomingSchedule->status,
-        ]);
+        return response()->json(['error' => 'User is neither a patient nor a doctor'], 404);
     }
 }
