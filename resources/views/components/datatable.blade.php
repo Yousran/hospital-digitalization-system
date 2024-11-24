@@ -49,79 +49,82 @@
         @endforeach
     </tbody>
 </table>
-<script>
-    if (document.getElementById("{{ $datatableId }}") && typeof simpleDatatables.DataTable !== 'undefined') {
-        const dataTable = new simpleDatatables.DataTable("#{{ $datatableId }}", {
-            tableRender: (_data, table, type) => {
-                if (type === "print") {
+@push('scripts')
+    
+    <script>
+        if (document.getElementById("{{ $datatableId }}") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#{{ $datatableId }}", {
+                tableRender: (_data, table, type) => {
+                    if (type === "print") {
+                        return table;
+                    }
+                    
+                    const tHead = table.childNodes[0];
+                    
+                    const filterHeaders = {
+                        nodeName: "TR",
+                        attributes: {
+                            class: "search-filtering-row"
+                        },
+                        childNodes: tHead.childNodes[0].childNodes.map((_th, index) => {
+                            if (_th.attributes && _th.attributes["data-ignore-search"]) {
+                                return { nodeName: "TH" };
+                            }
+                            return {
+                                nodeName: "TH",
+                                childNodes: [
+                                    {
+                                        nodeName: "INPUT",
+                                        attributes: {
+                                            class: "datatable-input",
+                                            type: "search",
+                                            "data-columns": "[" + index + "]",
+                                        }
+                                    }
+                                ]
+                            };
+                        })
+                    };
+                    
+                    tHead.childNodes.push(filterHeaders);
+                    
                     return table;
                 }
-                
-                const tHead = table.childNodes[0];
-                
-                const filterHeaders = {
-                    nodeName: "TR",
-                    attributes: {
-                        class: "search-filtering-row"
-                    },
-                    childNodes: tHead.childNodes[0].childNodes.map((_th, index) => {
-                        if (_th.attributes && _th.attributes["data-ignore-search"]) {
-                            return { nodeName: "TH" };
-                        }
-                        return {
-                            nodeName: "TH",
-                            childNodes: [
-                                {
-                                    nodeName: "INPUT",
-                                    attributes: {
-                                        class: "datatable-input",
-                                        type: "search",
-                                        "data-columns": "[" + index + "]",
-                                    }
-                                }
-                            ]
-                        };
-                    })
-                };
-                
-                tHead.childNodes.push(filterHeaders);
-                
-                return table;
-            }
-        });
-        
-        @if($routeCreate)
-        const datatableTop = document.querySelector(".datatable-top");
-        if (datatableTop) {
-            const datatableInput = datatableTop.querySelector(".datatable-search");
-            const datatableSearchInput = datatableInput.querySelector(".datatable-input");
+            });
             
-            if (datatableInput) {
-                const wrapperDiv = document.createElement("div");
-                wrapperDiv.classList.add("flex", "flex-start");
+            @if($routeCreate)
+            const datatableTop = document.querySelector(".datatable-top");
+            if (datatableTop) {
+                const datatableInput = datatableTop.querySelector(".datatable-search");
+                const datatableSearchInput = datatableInput.querySelector(".datatable-input");
                 
-                wrapperDiv.appendChild(datatableInput);
-                const addDataLink = document.createElement("a");
-                addDataLink.href = "{{ route($routeCreate) }}"; 
-                addDataLink.classList.add("bg-primary-500");
-                addDataLink.classList.add("hover:bg-primary-600");
-                addDataLink.classList.add("rounded-lg");
-                addDataLink.classList.add("mx-4");
-                addDataLink.classList.add("py-2");
-                addDataLink.classList.add("px-4");
-                addDataLink.classList.add("text-light-500");
-                addDataLink.classList.add("focus:ring-2");
-                addDataLink.classList.add("ring-light-500");
-                addDataLink.textContent = "Add Data";
-                
-                wrapperDiv.appendChild(addDataLink);
-                
-                datatableTop.appendChild(wrapperDiv);
+                if (datatableInput) {
+                    const wrapperDiv = document.createElement("div");
+                    wrapperDiv.classList.add("flex", "flex-start");
+                    
+                    wrapperDiv.appendChild(datatableInput);
+                    const addDataLink = document.createElement("a");
+                    addDataLink.href = "{{ route($routeCreate) }}"; 
+                    addDataLink.classList.add("bg-primary-500");
+                    addDataLink.classList.add("hover:bg-primary-600");
+                    addDataLink.classList.add("rounded-lg");
+                    addDataLink.classList.add("mx-4");
+                    addDataLink.classList.add("py-2");
+                    addDataLink.classList.add("px-4");
+                    addDataLink.classList.add("text-light-500");
+                    addDataLink.classList.add("focus:ring-2");
+                    addDataLink.classList.add("ring-light-500");
+                    addDataLink.textContent = "Add Data";
+                    
+                    wrapperDiv.appendChild(addDataLink);
+                    
+                    datatableTop.appendChild(wrapperDiv);
+                }
             }
+            @endif
         }
-        @endif
-    }
-</script>
+    </script>
+@endpush
     @else
             <p class="text-dark-500 dark:text-light-500">No Data</p>
         </table>

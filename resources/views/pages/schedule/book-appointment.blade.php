@@ -77,6 +77,9 @@
             </div>
         </div>
     </div>
+@endsection
+
+@push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get elements
@@ -161,4 +164,88 @@
             }
         });
     </script>
-@endsection
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const datepicker = document.getElementById('datepicker');
+            const selectedDateInputs = document.getElementById('selected_date');
+            const selectedDateDisplay = document.getElementById('selected_date_display');
+            const doctorId = {{ $doctor->id }};
+        
+            // Set initial date if exists
+            const initialDate = selectedDateInputs.value;
+            if (initialDate) {
+                const date = new Date(initialDate);
+                updateDateDisplay(date);
+            }
+        
+            // Initialize datepicker with minDate
+            new Datepicker(datepicker, {
+                minDate: new Date(),
+                format: 'yyyy-mm-dd',
+                autoselect: true,
+                buttons: true,
+                todayBtn: true,
+                clearBtn: true,
+                inline: true,
+                autohide: true
+            });
+
+            // Listen for datepicker changes
+            datepicker.addEventListener('changeDate', function(e) {
+                const date = new Date(e.detail.date);
+                const dateString = date.toISOString().split('T')[0];
+                
+                // Update all inputs with name="selected_date"
+                selectedDateInputs.value = dateString;
+        
+                // Update display text
+                updateDateDisplay(date);
+        
+                // Fetch booked slots
+                fetch(`{{ url('/schedule/check-availability') }}/${doctorId}/${dateString}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const bookedSlots = data.bookedSlots.map(time => time.slice(0, 5));
+        
+                        // Reset all time slots
+                        document.querySelectorAll('#timetable input[type="radio"]').forEach(input => {
+                            input.disabled = false;
+                            input.parentElement.querySelector('label').classList.remove(
+                                'text-light-700', 
+                                'bg-light-600', 
+                                'border-light-700',
+                                'hover:bg-primary-500',
+                                'hover:text-light-500',
+                                'dark:hover:bg-primary-500',
+                                'dark:hover:text-light-500',
+                            );
+                        });
+        
+                        // Disable booked slots
+                        bookedSlots.forEach(time => {
+                            const input = document.querySelector(`input[value="${time}"]`);
+                            if (input) {
+                                input.disabled = true;
+                                input.parentElement.querySelector('label').classList.add(
+                                    'text-light-700', 
+                                    'bg-light-600', 
+                                    'border-light-700', 
+                                    'cursor-not-allowed'
+                                );
+                            }
+                        });
+                    });
+            });
+        
+            function updateDateDisplay(date) {
+                selectedDateDisplay.textContent = date.toLocaleDateString('en-US', { 
+                    weekday: 'long',
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+        });
+    </script>
+@endpush

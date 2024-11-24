@@ -42,94 +42,96 @@
         </form>
     </div>
 </div>
+@push('scripts')
 
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        const fetchMedicalRecord = async () => {
-            try {
-                const response = await fetch('{{ route('fetchLatestUnratedMedicalRecord') }}');
-                if (!response.ok) throw new Error('Failed to fetch medical record');
-                return await response.json();
-            } catch (error) {
-                console.error(error);
-                return null;
-            }
-        };
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const fetchMedicalRecord = async () => {
+                try {
+                    const response = await fetch('{{ route('fetchLatestUnratedMedicalRecord') }}');
+                    if (!response.ok) throw new Error('Failed to fetch medical record');
+                    return await response.json();
+                } catch (error) {
+                    console.error(error);
+                    return null;
+                }
+            };
 
-        const loadCardData = async () => {
-            const data = await fetchMedicalRecord();
+            const loadCardData = async () => {
+                const data = await fetchMedicalRecord();
 
-            const cardWrapper = document.getElementById('rate-medical-record-card');
+                const cardWrapper = document.getElementById('rate-medical-record-card');
 
-            if (!data || data.error) {
-                cardWrapper.innerHTML = `
-                    <div class="flex justify-center items-center h-48 text-center">
-                        <p class="text-lg font-semibold text-dark-500 dark:text-light-500">Thank you for your Rate!</p>
-                    </div>`;
-                return null;
-            }
+                if (!data || data.error) {
+                    cardWrapper.innerHTML = `
+                        <div class="flex justify-center items-center h-48 text-center">
+                            <p class="text-lg font-semibold text-dark-500 dark:text-light-500">Thank you for your Rate!</p>
+                        </div>`;
+                    return null;
+                }
 
-            document.getElementById('doctor-picture').src = data.doctor.profile_picture;
-            document.getElementById('doctor-name').textContent = data.doctor.name;
-            document.getElementById('record-date').textContent = data.created_at;
-            document.getElementById('diagnosis').textContent = data.diagnosis;
-            document.getElementById('modal-medical_record_id').value = data.id;
+                document.getElementById('doctor-picture').src = data.doctor.profile_picture;
+                document.getElementById('doctor-name').textContent = data.doctor.name;
+                document.getElementById('record-date').textContent = data.created_at;
+                document.getElementById('diagnosis').textContent = data.diagnosis;
+                document.getElementById('modal-medical_record_id').value = data.id;
 
-            return data;
-        };
+                return data;
+            };
 
-        const handleStarClick = (recordId, value) => {
-            fetch('{{ route('storeRate') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ medical_record_id: recordId, rate: value }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data?.error) throw new Error(data.error);
-                document.getElementById('comment-modal').classList.remove('hidden');
-            })
-            .catch(error => console.error(error));
-        };
+            const handleStarClick = (recordId, value) => {
+                fetch('{{ route('storeRate') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ medical_record_id: recordId, rate: value }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data?.error) throw new Error(data.error);
+                    document.getElementById('comment-modal').classList.remove('hidden');
+                })
+                .catch(error => console.error(error));
+            };
 
-        const handleCommentSubmit = (event) => {
-            event.preventDefault();
-            const form = event.target;
-            const formData = new FormData(form);
-            fetch('{{ route('comments.store') }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data?.error) throw new Error(data.error);
-                form.reset();
-                document.getElementById('comment-modal').classList.add('hidden');
-                location.reload();
-            })
-            .catch(error => console.error(error));
-        };
+            const handleCommentSubmit = (event) => {
+                event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+                fetch('{{ route('comments.store') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data?.error) throw new Error(data.error);
+                    form.reset();
+                    document.getElementById('comment-modal').classList.add('hidden');
+                    location.reload();
+                })
+                .catch(error => console.error(error));
+            };
 
-        const recordData = await loadCardData();
+            const recordData = await loadCardData();
 
-        if (recordData) {
-            document.querySelectorAll('.rating-star').forEach(star => {
-                star.addEventListener('click', () => {
-                    const value = star.getAttribute('data-value');
-                    handleStarClick(recordData.id, value);
+            if (recordData) {
+                document.querySelectorAll('.rating-star').forEach(star => {
+                    star.addEventListener('click', () => {
+                        const value = star.getAttribute('data-value');
+                        handleStarClick(recordData.id, value);
+                    });
                 });
-            });
 
-            document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
-            document.getElementById('close-modal').addEventListener('click', () => {
-            document.getElementById('comment-modal').classList.add('hidden');
-            });
-        }
-    });
-</script>
+                document.getElementById('comment-form').addEventListener('submit', handleCommentSubmit);
+                document.getElementById('close-modal').addEventListener('click', () => {
+                document.getElementById('comment-modal').classList.add('hidden');
+                });
+            }
+        });
+    </script>
+@endpush

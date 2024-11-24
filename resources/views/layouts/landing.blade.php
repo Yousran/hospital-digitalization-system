@@ -24,6 +24,7 @@
             document.documentElement.classList.add('dark');
         }
     </script>
+    @stack('styles')
 </head>
 
 <body class="bg-light-500 dark:bg-dark-500">

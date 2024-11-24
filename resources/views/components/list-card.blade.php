@@ -7,6 +7,8 @@
             {{-- Data akan dimuat oleh JavaScript --}}
         </ul>
     </div>
+</div>
+@push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const fetchData = async () => {
@@ -55,4 +57,4 @@
             setInterval(fetchData, 2000);
         });
     </script>
-</div>
+@endpush

@@ -18,30 +18,32 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    
+    <script>
+        document.getElementById('theme-toggle-button').addEventListener('click', () => {
+            const menu = document.getElementById('theme-menu');
+            menu.classList.toggle('hidden');
+        });
 
-<script>
-    document.getElementById('theme-toggle-button').addEventListener('click', () => {
-        const menu = document.getElementById('theme-menu');
-        menu.classList.toggle('hidden');
-    });
-
-    function setTheme(theme) {
-        const root = document.documentElement;
-        if (theme === 'light') {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('color-theme', 'light');
-        } else if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('color-theme', 'dark');
-        } else if (theme === 'system') {
-            // Remove the theme setting to allow system default
-            localStorage.removeItem('color-theme');
-            // Apply system preference
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.classList.add('dark');
-            } else {
+        function setTheme(theme) {
+            const root = document.documentElement;
+            if (theme === 'light') {
                 document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            } else if (theme === 'system') {
+                // Remove the theme setting to allow system default
+                localStorage.removeItem('color-theme');
+                // Apply system preference
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
             }
         }
-    }
-</script>
+    </script>
+@endpush

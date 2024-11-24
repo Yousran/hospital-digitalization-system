@@ -119,9 +119,12 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-lis
 
-//TODO: Medical record overview untuk dashboard pasien
-//TODO: Custom Error page 404 dan seterusnya
 
+//TODO: fitur pencarian medicine untuk consultation
 //TODO: Consultation bagian medicine card memiliki field input description.
 //TODO: Consultation bagian medicine card bisa di hapus atau undo.
 //TODO: Consultation bagian medicine card dengan panah quantity yang berfungsi dan berinteraksi dengan jumlah stock, yang akan mengubah jumlah stock di database
+
+//TODO: Bagian edit doctor dan patient untuk admin, bisa menambahkan relasi dengan user
+//TODO: Medical record overview untuk dashboard pasien
+//TODO: Custom Error page 404 dan seterusnya

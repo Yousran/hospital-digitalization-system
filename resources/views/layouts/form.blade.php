@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    @yield('styles')
     <!-- Theme Loader -->
     <script>
         const savedTheme = localStorage.getItem('color-theme');
@@ -20,6 +19,7 @@
         }
     </script>
     <title>@yield('title')</title>
+    @stack('styles')
 </head>
 
 <body class="p-0 m-0 min-h-screen max-h-full bg-light-500 dark:bg-dark-500">

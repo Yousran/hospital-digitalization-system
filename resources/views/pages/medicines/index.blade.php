@@ -66,6 +66,9 @@
                     </div>
             @endforeach
         </div>
+@endsection
+
+@push('scripts')
     <script>
         function updateStock(medicineId, change) {
             const inputField = document.getElementById(`quantity-input-${medicineId}`);
@@ -108,4 +111,4 @@
         }
 
     </script>
-@endsection
+@endpush

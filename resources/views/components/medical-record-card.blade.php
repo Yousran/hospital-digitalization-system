@@ -11,6 +11,9 @@
             {{-- Data akan dimuat oleh JavaScript --}}
         </ul>
     </div>
+</div>
+@push('scripts')
+        
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const fetchData = async () => {
@@ -72,4 +75,4 @@
         });
 
     </script>
-</div>
+@endpush

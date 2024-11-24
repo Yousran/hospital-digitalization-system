@@ -12,72 +12,75 @@
     </label>
 </div>
 
-<script>
-    function initDropzone(id) {
-        const dropzoneArea = document.getElementById(`dropzone-area-${id}`);
-        const fileInput = document.getElementById(`dropzone-file-${id}`);
-        const uploadText = document.getElementById(`upload-text-${id}`);
-        const fileIdInput = document.getElementById(`fileId-${id}`);
+@push('scripts')
+    
+    <script>
+        function initDropzone(id) {
+            const dropzoneArea = document.getElementById(`dropzone-area-${id}`);
+            const fileInput = document.getElementById(`dropzone-file-${id}`);
+            const uploadText = document.getElementById(`upload-text-${id}`);
+            const fileIdInput = document.getElementById(`fileId-${id}`);
 
-        // Handle file selection via file input
-        fileInput.addEventListener('change', handleFileSelection);
+            // Handle file selection via file input
+            fileInput.addEventListener('change', handleFileSelection);
 
-        // Handle drag over (display dropzone area)
-        dropzoneArea.addEventListener('dragover', function(event) {
-            event.preventDefault();
-            dropzoneArea.classList.add('bg-dark-100');
-        });
+            // Handle drag over (display dropzone area)
+            dropzoneArea.addEventListener('dragover', function(event) {
+                event.preventDefault();
+                dropzoneArea.classList.add('bg-dark-100');
+            });
 
-        // Handle drag leave (reset dropzone area)
-        dropzoneArea.addEventListener('dragleave', function() {
-            dropzoneArea.classList.remove('bg-gray-100');
-        });
+            // Handle drag leave (reset dropzone area)
+            dropzoneArea.addEventListener('dragleave', function() {
+                dropzoneArea.classList.remove('bg-gray-100');
+            });
 
-        // Handle drop (file drop action)
-        dropzoneArea.addEventListener('drop', function(event) {
-            event.preventDefault();
-            dropzoneArea.classList.remove('bg-gray-100');
-            const files = event.dataTransfer.files;
-            if (files.length > 0) {
-                handleFileSelection({ target: { files: files } });
-            }
-        });
+            // Handle drop (file drop action)
+            dropzoneArea.addEventListener('drop', function(event) {
+                event.preventDefault();
+                dropzoneArea.classList.remove('bg-gray-100');
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelection({ target: { files: files } });
+                }
+            });
 
-        // Handle the file selection or drop
-        function handleFileSelection(event) {
-            let file = event.target.files[0];
+            // Handle the file selection or drop
+            function handleFileSelection(event) {
+                let file = event.target.files[0];
 
-            if (file) {
-                let formData = new FormData();
-                formData.append('file', file);
+                if (file) {
+                    let formData = new FormData();
+                    formData.append('file', file);
 
-                // Send the file via AJAX to your Laravel controller
-                fetch("{{ route('files.store') }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for Laravel protection
-                    },
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // After successful upload, set the file ID in the hidden input field
-                        fileIdInput.value = data.file.id;
-                        // Update the label text with the uploaded file name
-                        uploadText.innerHTML = `File uploaded: <span class="font-semibold">${data.file.name}</span>`;
-                    } else {
-                        // Handle upload error
-                        console.error('Error uploading file');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+                    // Send the file via AJAX to your Laravel controller
+                    fetch("{{ route('files.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for Laravel protection
+                        },
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // After successful upload, set the file ID in the hidden input field
+                            fileIdInput.value = data.file.id;
+                            // Update the label text with the uploaded file name
+                            uploadText.innerHTML = `File uploaded: <span class="font-semibold">${data.file.name}</span>`;
+                        } else {
+                            // Handle upload error
+                            console.error('Error uploading file');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
             }
         }
-    }
 
-    // Initialize the dropzone by passing the unique ID
-    initDropzone('{{ $id }}');
-</script>
+        // Initialize the dropzone by passing the unique ID
+        initDropzone('{{ $id }}');
+    </script>
+@endpush

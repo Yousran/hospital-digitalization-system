@@ -68,6 +68,9 @@
                 </div>
             </div>
     </form>
+@endsection
+
+@push('scripts')
     <script>
         document.addEventListener('click', function(event) {
             if (event.target.closest('[data-input-counter-increment]')) {
@@ -78,7 +81,7 @@
                     input.value = currentValue + 1;
                 }
             }
-    
+
             if (event.target.closest('[data-input-counter-decrement]')) {
                 const inputId = event.target.closest('[data-input-counter-decrement]').dataset.inputCounterDecrement;
                 const input = document.getElementById(inputId);
@@ -148,4 +151,4 @@
             }
         }
     </script>
-@endsection
+@endpush
