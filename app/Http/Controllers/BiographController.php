@@ -25,49 +25,24 @@ class BiographController extends Controller
             'religion' => 'required|string|max:100',
             'marriage_status' => 'required|string|max:100',
             'job' => 'required|string|max:100',
-            'file_id' => 'nullable|integer',
-            'speciality_id' => 'nullable|integer',
-            'relatives' => 'nullable|string',
+            'file_id' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $biograph = Biograph::updateOrCreate(
+        // Create or update the biograph
+        $biograph = Biograph::create(
+            ['user_id' => $validated['user_id'] ?? null],
             [
-                'user_id' => $request->input('user_id'),
-                'nik' => $request->input('nik'),
-                'surename' => $request->input('surename'),
-                'date_of_birth' => $request->input('date_of_birth'),
-                'gender' => $request->input('gender'),
-                'address' => $request->input('address'),
-                'religion' => $request->input('religion'),
-                'marriage_status' => $request->input('marriage_status'),
-                'job' => $request->input('job'),
-                'file_id' => $request->input('file_id'),
+            'nik' => $validated['nik'],
+            'surename' => $validated['surename'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'gender' => $validated['gender'],
+            'address' => $validated['address'],
+            'religion' => $validated['religion'],
+            'marriage_status' => $validated['marriage_status'],
+            'job' => $validated['job'],
+            'file_id' => $validated['file_id'] ?? null,
             ]
         );
-
-        // Update speciality if speciality_id is provided
-        if (!empty($validated['speciality_id']) && $biograph) {
-            Doctor::create(
-                [
-                    'speciality_id' => $validated['speciality_id'],
-                    'biograph_id' => $biograph->id,
-                ]);
-        }
-
-        // Update patient relatives if patient_id and relatives are provided
-        if (!empty($validated['relatives']) && $biograph) {
-            $relatives = User::where('name', $validated['relatives'])->first();
-            if ($relatives) {
-                Patient::create(
-                    [
-                        'relatives' => $relatives->id,
-                        'biograph_id' => $biograph->id,
-                    ]);
-            } else {
-                // Handle the case when no relative is found (optional)
-                return redirect()->back()->withErrors(['relatives' => 'Relative not found']);
-            }
-        }
 
         // Redirect with success message
         return redirect()->back()->with('success', 'Biograph created successfully.');
@@ -75,84 +50,38 @@ class BiographController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the incoming request data
+        // Validate the request data
         $validated = $request->validate([
-            'nik' => 'required|string|max:255',
             'surename' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
-            'gender' => 'required|string',
             'address' => 'required|string',
-            'religion' => 'required|string',
-            'marriage_status' => 'required|string',
-            'job' => 'required|string',
-            'file_id' => 'nullable|integer',
-            'doctor_id' => 'nullable|integer',
-            'speciality_id' => 'nullable|integer',
-            'patient_id' => 'nullable|integer',
-            'relatives' => 'nullable|string',
-            'name' => 'nullable|string|exists:users,name',
+            'religion' => 'required|string|max:255',
+            'job' => 'required|string|max:255',
+            'nik' => 'required|string|max:255',
+            'gender' => 'required|string|in:laki-laki,perempuan',
+            'marriage_status' => 'required|string|max:255',
+            'file_id' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'user_id' => 'nullable|integer',
         ]);
 
-        // Check if the username is already linked to another doctor
-        if (!empty($validated['name'])) {
-            $user = User::where('name', $validated['name'])->first();
-            if ($user && Doctor::where('user_id', $user->id)->exists()) {
-                return redirect()->back()->withErrors(['name' => 'This username is already linked to another doctor.']);
-            }
-        }
-
-        if (!empty($validated['name'])) {
-            $user = User::where('name', $validated['name'])->first();
-            if ($user && Patient::where('user_id', $user->id)->exists()) {
-                return redirect()->back()->withErrors(['name' => 'This username is already linked to another patient.']);
-            }
-        }
-
-        // Update speciality if speciality_id is provided
-        if (!empty($validated['speciality_id']) && !empty($validated['doctor_id'])) {
-            $doctor = Doctor::findOrFail($validated['doctor_id']);
-            $doctor->update([
-                'speciality_id' => $validated['speciality_id'],
-                'user_id' => $user->id ?? null,
-            ]);
-        }
-
-        // Update patient relatives if patient_id and relatives are provided
-        if (!empty($validated['relatives']) && !empty($validated['patient_id'])) {
-            $patient = Patient::findOrFail($validated['patient_id']);
-            
-            // Find the relative based on the name
-            $relatives = User::where('name', $validated['relatives'])->first();  // Use `first()` to get the actual user
-            
-            if ($relatives) {
-                $patient->update([
-                    'relatives' => $relatives->id,
-                    'user_id' => $user->id ?? null
-                ]);
-            } else {
-                // Handle the case when no relative is found (optional)
-                return redirect()->back()->withErrors(['relatives' => 'Relative not found']);
-            }
-        }
-
-        // Find the biograph entry
+        // Cari biografi berdasarkan ID
         $biograph = Biograph::findOrFail($id);
 
-        // Update the biograph with validated data
+        // Update data biografi
         $biograph->update([
-            'nik' => $request->input('nik'),
-            'surename' => $request->input('surename'),
-            'date_of_birth' => $request->input('date_of_birth'),
-            'gender' => $request->input('gender'),
-            'address' => $request->input('address'),
-            'religion' => $request->input('religion'),
-            'marriage_status' => $request->input('marriage_status'),
-            'job' => $request->input('job'),
-            'file_id' => $request->input('file_id'),
-            'user_id' => $user->id ?? null,
+            'user_id' => $validated['user_id'],
+            'surename' => $validated['surename'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'address' => $validated['address'],
+            'religion' => $validated['religion'],
+            'job' => $validated['job'],
+            'nik' => $validated['nik'],
+            'gender' => $validated['gender'],
+            'marriage_status' => $validated['marriage_status'],
+            'file_id' => $validated['file_id'] ?? $biograph->file_id,
         ]);
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Biograph updated successfully.');
+        // Redirect ke halaman profil dengan pesan sukses
+        return redirect()->back()->with('success', 'Biografi berhasil diperbarui.');
     }
 }

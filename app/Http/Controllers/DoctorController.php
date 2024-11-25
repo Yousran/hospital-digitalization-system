@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Biograph;
 use App\Models\Doctor;
 use App\Models\Speciality;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DoctorController extends Controller
 {
@@ -37,12 +40,40 @@ class DoctorController extends Controller
         return view('pages.tables.doctors.create',compact('specialities'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'surename' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'address' => 'required|string',
+            'religion' => 'required|string|max:100',
+            'job' => 'required|string|max:100',
+            'nik' => 'required|string|max:255|unique:biographs,nik',
+            'gender' => 'required|string|max:50',
+            'marriage_status' => 'required|string|max:100',
+            'file_id' => 'nullable|integer|exists:files,id',
+            'speciality_id' => 'required|integer|exists:specialities,id',
+        ]);
+
+        $biograph = Biograph::create([
+            'nik' => $validated['nik'],
+            'surename' => $validated['surename'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'gender' => $validated['gender'],
+            'address' => $validated['address'],
+            'religion' => $validated['religion'],
+            'marriage_status' => $validated['marriage_status'],
+            'job' => $validated['job'],
+            'file_id' => $validated['file_id'],
+        ]);
+
+        Doctor::create([
+            'biograph_id' => $biograph->id,
+            'speciality_id' => $validated['speciality_id'],
+            'rating' => 0,
+        ]);
+
+        return redirect()->back()->with('success', 'Doctor created successfully.');
     }
 
     /**
@@ -59,16 +90,48 @@ class DoctorController extends Controller
     public function edit(string $id)
     {
         $doctor = Doctor::findOrFail($id);
+        // $users = User::doesntHave('biograph')->get();
+        $users = User::all();
         $specialities = Speciality::all();
-        return view('pages.tables.doctors.edit', compact(['doctor','specialities']));
+        return view('pages.tables.doctors.edit', compact(['doctor','specialities','users']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Doctor $doctor)
+    public function update(Request $request, $id)
     {
-        //
+        $doctor = Doctor::findOrFail($id);
+        $validated = $request->validate([
+            'user_id' => 'nullable|integer|exists:users,id',
+            'surename' => 'required|string|max:255',
+            'date_of_birth' => 'required|date',
+            'address' => 'required|string',
+            'religion' => 'required|string|max:100',
+            'job' => 'required|string|max:100',
+            'nik' => 'required|string|max:255|unique:biographs,nik,' . $doctor->biograph->id,
+            'gender' => 'required|string|max:50',
+            'marriage_status' => 'required|string|max:100',
+            'file_id' => 'nullable|integer|exists:files,id',
+            'speciality_id' => 'required|integer|exists:specialities,id',
+        ]);
+
+        $doctor->biograph->update([
+            'user_id' => $validated['user_id'],
+            'nik' => $validated['nik'],
+            'surename' => $validated['surename'],
+            'date_of_birth' => $validated['date_of_birth'],
+            'gender' => $validated['gender'],
+            'address' => $validated['address'],
+            'religion' => $validated['religion'],
+            'marriage_status' => $validated['marriage_status'],
+            'job' => $validated['job'],
+            'file_id' => $validated['file_id'],
+        ]);
+
+        $doctor->update([
+            'speciality_id' => $validated['speciality_id'],
+            'user_id' => $validated['user_id'],
+        ]);
+
+        return redirect()->back()->with('success', 'Doctor updated successfully.');
     }
 
     /**

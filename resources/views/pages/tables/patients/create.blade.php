@@ -3,7 +3,7 @@
 @section('title', 'Create Patient')
 
 @section('contents')
-    <x-form formMethod="POST" action="{{ route('biographs.store') }}" routeBack="{{ route('patients.index') }}" xlColSpan="2" mdColSpan="2" formHeading="Create New Patient">
+    <x-form formMethod="POST" action="{{ route('patients.store') }}" routeBack="{{ route('patients.index') }}" xlColSpan="2" mdColSpan="2" formHeading="Create New Patient">
         <div>
             <label for="surename" class="block mb-2 text-sm font-medium text-dark-500 dark:text-light-500">Surename</label>
             <input type="text" name="surename" id="surename" 

@@ -119,9 +119,9 @@ class AuthenticateController extends Controller
                     'email' => $googleUser->getEmail(),
                     'password' => Hash::make(uniqid()),
                     'picture' => File::create([
-                    'name' => $googleUser->getName(),
-                    'path' => $googleUser->getAvatar(),
-                ])->id,
+                        'name' => $googleUser->getName(),
+                        'path' => $googleUser->getAvatar(),
+                    ])->id,
                 ]);
 
                 $roles = UserRole::create([
