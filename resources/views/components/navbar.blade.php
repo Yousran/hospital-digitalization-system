@@ -57,7 +57,7 @@
                         <li><a href="{{ route('user.profile', ['username' => auth()->user()->name]) }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-dark-400 dark:text-gray-200 dark:hover:text-white">Profile</a>
                         </li>
-                        <li><a href="#"
+                        <li><a href="{{ route('settings') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-dark-400 dark:text-gray-200 dark:hover:text-white">Settings</a>
                         </li>
                         <li><a href="{{ route('logout') }}"

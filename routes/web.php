@@ -125,8 +125,6 @@ Route::middleware(['auth','log'])->group(function () {
 //Dashboard 
 //https://flowbite.com/docs/components/card/#card-with-lis
 
-//TODO: Biographs
-
 //TODO: Medical record overview untuk dashboard pasien
 //TODO: Alert view connect dengan controller 
 //TODO: Custom Error page 404 dan seterusnya
